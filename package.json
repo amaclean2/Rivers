@@ -1,14 +1,13 @@
 {
-  "name": "rivers",
-  "version": "1.0.0",
+  "name": "@amaclean2/sundaypeak-rivers",
+  "version": "1.0.1",
   "description": "The backend for the Sunday Peak application",
   "main": "node index.js",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
-    "start": "NODE_ENV=\"production\" node index.js",
-    "dev": "env-cmd -f .env.dev nodemon --trace-warnings index.js",
-    "docker": "nodemon --trace-warnings index.js",
-    "stage": "NODE_ENV=\"stage\" node index.js",
-    "test": "NODE_ENV=\"test\" env-cmd -f .env.test jest --coverage",
+    "test": "echo \"no tests yet\"",
     "lint": "NODE_ENV=\"test\" eslint . --ext .js --fix"
   },
   "author": "Andrew Maclean",
