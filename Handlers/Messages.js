@@ -21,7 +21,7 @@ const addConversation = async (req, res) => {
         res,
         status: NOT_ACCEPTABLE,
         message:
-          'user ids formatted as numbers are required in the request body for a conversation to be created'
+          'an array of user ids as numbers are required in the request body for a conversation to be created'
       })
     }
 
@@ -59,7 +59,7 @@ const getConversations = async (req, res) => {
   try {
     const { id_from_token } = req.body
 
-    const { conversations } =
+    const conversations =
       await serviceHandler.messagingService.getConversationsPerUser({
         userId: id_from_token
       })

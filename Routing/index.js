@@ -6,6 +6,7 @@ const picturesRouter = require('./Pictures')
 const servicesRouter = require('./Services')
 const conversationsRouter = require('./Messages')
 const { requestLogger } = require('../Config/loggerMiddleware')
+const { sendResponse, NOT_FOUND } = require('../ResponseHandling')
 
 const router = Router()
 
@@ -16,5 +17,22 @@ router.use('/adventures', adventuresRouter)
 router.use('/pictures', picturesRouter)
 router.use('/services', servicesRouter)
 router.use('/conversations', conversationsRouter)
+router.use('/', (req, res) => {
+  return sendResponse({
+    req,
+    res,
+    data: {
+      message: 'Select a path to create an API connection',
+      paths: [
+        '/users',
+        '/adventures',
+        '/pictures',
+        '/services',
+        '/conversations'
+      ]
+    },
+    status: NOT_FOUND
+  })
+})
 
 module.exports = router
