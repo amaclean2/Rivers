@@ -14,7 +14,8 @@ const {
   editAdventure,
   searchAdventures,
   importBulkData,
-  processCSV
+  processCSV,
+  getAdventuresByDistance
 } = require('../../Handlers/Adventures')
 const { SUCCESS } = require('../../ResponseHandling/statuses')
 const { adventureTypes } = require('../../Config/utils')
@@ -29,6 +30,7 @@ router.post('/', adventureCreateValidator(), createNewAdventure)
 router.get('/all', adventuresGetValidator(), getAllAdventures)
 router.get('/details', getAdventureDetails)
 router.get('/search', searchAdventures)
+router.get('/distance', getAdventuresByDistance)
 router.post('/todo', createTodoValidator(), createTodo)
 router.post('/complete', createValidator(), completeAdventure)
 router.post('/processCsv', processCSV)

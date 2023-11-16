@@ -111,6 +111,32 @@ const searchAdventures = async (req, res) => {
   }
 }
 
+const getAdventuresByDistance = async (req, res) => {
+  try {
+    const { coordinates_lat, coordinates_lng, adventure_type, count } =
+      req.query
+    if (!(coordinates_lat && coordinates_lng && adventure_type)) {
+      throw 'Coordinates_lat and coordinates_lng and adventure_type are required in the query parameters. Count is optional'
+    }
+
+    const coordinates = {
+      lat: Number(coordinates_lat),
+      lng: Number(coordinates_lng)
+    }
+
+    const adventures =
+      await serviceHandler.adventureService.getClosestAdventures({
+        adventureType: adventure_type,
+        coordinates,
+        count: Number(count)
+      })
+
+    return sendResponse({ req, res, data: { adventures }, status: SUCCESS })
+  } catch (error) {
+    return returnError({ req, res, error, message: 'serverGetAdventures' })
+  }
+}
+
 const getAdventureDetails = async (req, res) => {
   try {
     const { id, type } = req.query
@@ -202,5 +228,6 @@ module.exports = {
   importBulkData,
   createNewAdventure,
   editAdventure,
-  deleteAdventure
+  deleteAdventure,
+  getAdventuresByDistance
 }

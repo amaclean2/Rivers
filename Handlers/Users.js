@@ -4,7 +4,8 @@ const {
   NO_CONTENT,
   SUCCESS,
   ACCEPTED,
-  CREATED
+  CREATED,
+  NOT_ACCEPTABLE
 } = require('../ResponseHandling/statuses')
 const { sendResponse } = require('../ResponseHandling/success')
 
@@ -197,6 +198,15 @@ const followUser = async (req, res) => {
   try {
     const { id_from_token } = req.body
     const { leader_id } = req.query
+
+    if (Number(id_from_token) === Number(leader_id)) {
+      throw returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        message: 'The leader_id must be different than your user id.'
+      })
+    }
 
     const followResponse = await serviceHandler.userService.friendUser({
       leaderId: Number(leader_id),
