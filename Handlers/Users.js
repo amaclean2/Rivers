@@ -115,13 +115,14 @@ const resetPassword = async (req, res) => {
       throw returnError({ req, res, error: errors.array()[0] })
     }
     const { email } = req.body
-    await serviceHandler.passwordService.sendPasswordResetEmail({ email })
+    const verification =
+      await serviceHandler.passwordService.sendPasswordResetEmail({ email })
 
     return sendResponse({
       req,
       res,
-      data: { message: 'password reset email sent successfully' },
-      status: NO_CONTENT
+      data: { message: verification },
+      status: SUCCESS
     })
   } catch (error) {
     return returnError({ req, res, message: 'serverValidateUser', error })
@@ -135,11 +136,10 @@ const savePasswordReset = async (req, res) => {
       throw returnError({ req, res, error: errors.array()[0] })
     }
 
-    const { user_id, password, reset_token } = req.body
+    const { password, reset_token } = req.body
     const updatePasswordResponse =
       await serviceHandler.passwordService.saveNewPassword({
         newPassword: password,
-        userId: user_id,
         resetToken: reset_token
       })
 
