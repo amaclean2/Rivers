@@ -19,7 +19,8 @@ const createUser = async (req, res) => {
       throw returnError({ req, res, error: errors.array()[0] })
     }
 
-    const { email, password, first_name, last_name, password_2 } = req.body
+    const { email, password, first_name, last_name, password_2, native } =
+      req.body
 
     const newUserResponse = await serviceHandler.userService.addNewUser({
       email,
@@ -27,7 +28,8 @@ const createUser = async (req, res) => {
       confirmPassword: password_2,
       firstName: first_name,
       lastName: last_name,
-      baseImageUrl: buildImageUrl()
+      baseImageUrl: buildImageUrl(),
+      native
     })
 
     return sendResponse({ req, res, data: newUserResponse, status: CREATED })
@@ -48,12 +50,13 @@ const loginUser = async (req, res) => {
       throw returnError({ req, res, error: errors.array()[0] })
     }
 
-    const { email, password } = req.body
+    const { email, password, native } = req.body
 
     const loginUserResponse =
       await serviceHandler.userService.loginWithEmailAndPassword({
         email,
-        password
+        password,
+        native
       })
 
     return sendResponse({ req, res, data: loginUserResponse, status: SUCCESS })
@@ -125,7 +128,12 @@ const resetPassword = async (req, res) => {
       status: SUCCESS
     })
   } catch (error) {
-    return returnError({ req, res, message: 'serverValidateUser', error })
+    return returnError({
+      req,
+      res,
+      message: 'Server Error: Could not send a password link',
+      error
+    })
   }
 }
 

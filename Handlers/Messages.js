@@ -28,21 +28,30 @@ const addConversation = async (req, res) => {
     const { id_from_token } = req.body
     const userIds = [id_from_token, ...req.body.user_ids]
 
-    const { conversationId } =
-      await serviceHandler.messagingService.createConversation({ userIds })
+    const response = await serviceHandler.messagingService.createConversation({
+      userIds
+    })
+
     return sendResponse({
       req,
       res,
-      data: {
-        conversation: {
-          users: userIds.map((id) => ({
-            user_id: id
-          })),
-          conversation_id: conversationId,
-          last_message: '',
-          unread: false
-        }
-      },
+      data: response.conversation_exists
+        ? {
+            conversation: {
+              users: userIds.map((id) => ({
+                user_id: id
+              })),
+              ...response.conversation
+            }
+          }
+        : {
+            conversation: {
+              conversation_id: response.conversation_id,
+              last_message: '',
+              unread: false
+            },
+            senderId: id_from_token
+          },
       status: CREATED
     })
   } catch (error) {

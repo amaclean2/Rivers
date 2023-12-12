@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken')
 const router = require('./Routing')
 const { corsHandler } = require('./Config/cors')
 const { returnError, NOT_ACCEPTABLE } = require('./ResponseHandling')
+const logger = require('./Config/logger')
 
 config()
 
@@ -24,7 +25,7 @@ const validUrls = [
   'GET:/verify',
   'POST:/users/login',
   'POST:/users',
-  'GET:/users/passwordResetLink',
+  'POST:/users/passwordResetLink',
   'POST:/users/newPassword',
   'GET:/images'
 ]
