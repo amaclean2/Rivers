@@ -142,7 +142,7 @@ const getAdventureDetails = async (req, res) => {
       throw returnError({ req, res, message: 'adventureIdFieldRequired' })
     }
 
-    logger.info({ id, type })
+    logger.info(JSON.stringify({ id, type }))
 
     const adventure =
       await serviceHandler.adventureService.getSpecificAdventure({

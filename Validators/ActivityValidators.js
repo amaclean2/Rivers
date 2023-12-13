@@ -30,15 +30,18 @@ const createValidator = () => {
       })
       .customSanitizer((value, { req }) => {
         const [newRating, oldRating, oldRatingTally] = value.split(':')
+        const newRatingNum = Number(newRating)
+        const oldRatingNum = Number(oldRating)
+        const oldRatingTallyNum = Number(oldRatingTally)
 
         const newAverage =
           oldRatingTally !== '0'
-            ? (Number(newRating) + Number(oldRating)) /
-              (Number(oldRatingTally) + 1)
-            : Number(newRating)
+            ? (newRatingNum + oldRatingNum * oldRatingTallyNum) /
+              (oldRatingTallyNum + 1)
+            : newRatingNum
 
         req.body.old_rating = value
-        return `${newAverage}:${Number(oldRatingTally) + 1}`
+        return `${newAverage}:${oldRatingTallyNum + 1}`
       }),
     body('difficulty')
       .custom((value) => {
@@ -55,14 +58,18 @@ const createValidator = () => {
       })
       .customSanitizer((value, { req }) => {
         const [newRating, oldRating, oldRatingTally] = value.split(':')
+        const newRatingNum = Number(newRating)
+        const oldRatingNum = Number(oldRating)
+        const oldRatingTallyNum = Number(oldRatingTally)
+
         const newAverage =
           oldRatingTally !== '0'
-            ? (Number(newRating) + Number(oldRating)) /
-              (Number(oldRatingTally) + 1)
-            : Number(newRating)
+            ? (newRatingNum + oldRatingNum * oldRatingTallyNum) /
+              (oldRatingTallyNum + 1)
+            : newRatingNum
 
         req.body.old_difficulty = value
-        return `${newAverage}:${Number(oldRatingTally) + 1}`
+        return `${newAverage}:${oldRatingTallyNum + 1}`
       }),
     body('public')
       .not()

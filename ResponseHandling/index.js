@@ -44,7 +44,7 @@ const returnError = ({
   errorBody.code_error = error
 
   logger.error(messageText)
-  logger.error(error)
+  logger.error(JSON.stringify(error))
 
   res.status(messageCode ? messageCode : SERVER_ERROR).json({
     error: errorBody,

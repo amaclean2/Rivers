@@ -36,8 +36,11 @@ const adventureEditValidator = () => {
         // block a change if people have already been completing the activity
         if (field.name === 'difficulty') {
           const [difficultyValue, iterations] = field.value.split(':')
-          if (iterations > 1) {
+          if (Number(iterations) > 1) {
             throw 'difficulty cannot be edited once users have been completing the activity'
+          }
+          if (isNaN(Number(difficultyValue))) {
+            throw 'the first value in difficulty needs to be a number formatted as a string'
           }
         }
 

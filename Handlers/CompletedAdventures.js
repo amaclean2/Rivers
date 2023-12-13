@@ -6,6 +6,7 @@ const {
 } = require('../ResponseHandling')
 const serviceHandler = require('../Config/services')
 const { validationResult } = require('express-validator')
+const logger = require('../Config/logger')
 
 const completeAdventure = async (req, res) => {
   try {
@@ -24,6 +25,16 @@ const completeAdventure = async (req, res) => {
       old_rating,
       old_difficulty
     } = req.body
+
+    logger.info(
+      JSON.stringify({
+        user_id,
+        adventure_id,
+        adventure_type,
+        rating,
+        difficulty
+      })
+    )
 
     const { match, response } =
       await serviceHandler.adventureService.checkAdventureRatings({

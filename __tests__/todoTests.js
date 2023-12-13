@@ -42,7 +42,7 @@ const todoTests = () => {
     expect(data.todo).toBeDefined()
     expect(data.todo.user_todo_field).toBeDefined()
     expect(data.todo.adventure_todo_field).toBeDefined()
-    logger.info({ todo: data.todo })
+    logger.info(JSON.stringify({ todo: data.todo }))
   })
 
   test('the adventure has a todo field', async () => {
