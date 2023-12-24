@@ -10,7 +10,7 @@ const userLoginValidator = () => {
       .withMessage('invalidField'),
     body('password').not().isEmpty().withMessage('missingFieldsLogin'),
     body('native').custom((value) => {
-      if (!value || typeof value !== 'boolean')
+      if ([undefined, null].includes(value) || typeof value !== 'boolean')
         throw 'The `native` boolean needs to be present in a token creation request to the server'
 
       return true
@@ -93,7 +93,7 @@ const userCreateValidator = () => {
       .bail()
       .withMessage('legalBool'),
     body('native').custom((value) => {
-      if (!value || typeof value !== 'boolean')
+      if ([undefined, null].includes(value) || typeof value !== 'boolean')
         throw 'The `native` boolean needs to be present in a token creation request to the server'
 
       return true

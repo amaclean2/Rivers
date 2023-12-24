@@ -1,11 +1,16 @@
 const { Router } = require('express')
-const { addConversation, getConversations } = require('../../Handlers/Messages')
+const {
+  addConversation,
+  getConversations,
+  deleteConversation
+} = require('../../Handlers/Messages')
 const { sendResponse, NOT_FOUND } = require('../../ResponseHandling')
 
 const router = Router()
 
 router.post('/', addConversation)
 router.get('/', getConversations)
+router.delete('/', deleteConversation)
 router.use('/', (req, res) => {
   return sendResponse({
     req,

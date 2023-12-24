@@ -3,9 +3,11 @@ const {
   returnError,
   CREATED,
   NOT_ACCEPTABLE,
-  SUCCESS
+  SUCCESS,
+  NOT_FOUND
 } = require('../ResponseHandling')
 const serviceHandler = require('../Config/services')
+const logger = require('../Config/logger')
 
 const addConversation = async (req, res) => {
   try {
@@ -84,7 +86,27 @@ const getConversations = async (req, res) => {
   }
 }
 
+const deleteConversation = async (req, res) => {
+  try {
+    logger.info('delete conversation not ready')
+    throw returnError({
+      req,
+      res,
+      message: 'endpoint not ready',
+      status: NOT_FOUND
+    })
+  } catch (error) {
+    return returnError({
+      req,
+      res,
+      message: 'server error: could not delete conversation',
+      error
+    })
+  }
+}
+
 module.exports = {
   getConversations,
-  addConversation
+  addConversation,
+  deleteConversation
 }

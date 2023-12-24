@@ -4,7 +4,7 @@ const { isDefined, checkPathObj, convertPathObject } = require('../utils')
 const adventureEditValidator = () => {
   return [
     body('field')
-      .custom((field, { req }) => {
+      .custom((field) => {
         if (field === undefined) {
           throw 'field object containing name, value, adventure_id, and adventure_type must be present in the body'
         }
@@ -15,18 +15,6 @@ const adventureEditValidator = () => {
           field.adventure_id,
           field.adventure_type
         )
-
-        if (
-          [
-            'distance',
-            'exposure',
-            'summit_elevation',
-            'base_elevation'
-          ].includes(field.name) &&
-          typeof field.value !== 'number'
-        ) {
-          req.body.field.value = parseInt(field.value)
-        }
 
         // ensure the path object is an array of lat/lng arrays
         if (field.name === 'path') {
@@ -53,17 +41,29 @@ const adventureEditValidator = () => {
 
         return true
       })
-      .customSanitizer((field, { req }) => {
+      .customSanitizer((field) => {
+        if (
+          [
+            'distance',
+            'exposure',
+            'summit_elevation',
+            'base_elevation'
+          ].includes(field.name) &&
+          typeof field.value !== 'number'
+        ) {
+          field.value = parseFloat(field.value)
+        }
+
         if (field.name === 'path') {
           const trailPath = convertPathObject(field.value)
 
-          req.body.field.name = 'trail_path'
-          req.body.field.value = trailPath
+          field.name = 'trail_path'
+          field.value = trailPath
         }
         if (field.name === 'distance') {
-          if (req.body.adventure_type === 'ski') {
-            req.body.field.name = 'approach_distance'
-            req.body.field.value = field.value.toString()
+          if (field.adventure_type === 'ski') {
+            field.name = 'approach_distance'
+            field.value = field.value.toString()
           }
         }
 
