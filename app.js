@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken')
 const router = require('./Routing')
 const { corsHandler } = require('./Config/cors')
 const { returnError, NOT_ACCEPTABLE } = require('./ResponseHandling')
-const logger = require('./Config/logger')
 
 config()
 
@@ -20,6 +19,7 @@ const validUrls = [
   'GET:/adventures/search',
   'GET:/adventures/adventureTypes',
   'GET:/adventures/details',
+  'GET:/adventures/distance',
   'POST:/savePasswordReset',
   'POST:/resetPassword',
   'GET:/verify',
