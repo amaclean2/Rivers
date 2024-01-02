@@ -6,7 +6,8 @@ const sendResponse = ({ req, res, data, status }) => {
 
   return res.status(status).json({
     data,
-    statusCode: status
+    statusCode: status,
+    timestamp: Date.now()
   })
 }
 

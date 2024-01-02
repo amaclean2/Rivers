@@ -40,14 +40,13 @@ const addConversation = async (req, res) => {
       data: response.conversation_exists
         ? {
             conversation: {
-              users: userIds.map((id) => ({
-                user_id: id
-              })),
+              users: userIds.map((user_id) => ({ user_id })),
               ...response.conversation
             }
           }
         : {
             conversation: {
+              users: userIds.map((user_id) => ({ user_id })),
               conversation_id: response.conversation_id,
               last_message: '',
               unread: false
@@ -61,6 +60,39 @@ const addConversation = async (req, res) => {
       req,
       res,
       message: 'server error: could not create a conversation',
+      error
+    })
+  }
+}
+
+const addUserToConversation = async (req, res) => {
+  try {
+    const { user_id, conversation_id } = req.body
+    if (!(user_id && conversation_id)) {
+      throw returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        message: 'a user_id and conversation_id is required to add a user'
+      })
+    }
+
+    await serviceHandler.messagingService.expandConversation({
+      userId: user_id,
+      conversationId: conversation_id
+    })
+
+    return sendResponse({
+      req,
+      res,
+      data: { message: 'user added', user_id, conversation_id },
+      status: SUCCESS
+    })
+  } catch (error) {
+    return returnError({
+      req,
+      res,
+      message: 'server error: could not add user to conversation',
       error
     })
   }
@@ -108,5 +140,6 @@ const deleteConversation = async (req, res) => {
 module.exports = {
   getConversations,
   addConversation,
-  deleteConversation
+  deleteConversation,
+  addUserToConversation
 }
