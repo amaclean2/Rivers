@@ -14,6 +14,7 @@ const {
   returnError,
   SERVER_ERROR
 } = require('../ResponseHandling')
+const logger = require('../Config/logger')
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -122,13 +123,20 @@ const changeProfilePicture = async (req, res) => {
 
     await uploadPromisified(req, res)
 
+    logger.info(`Image has been uploaded: ${req.file.originalname}`)
+
     const {
       file,
       body: { previous_profile_url }
     } = req
 
     const baseImageUrl = buildImageUrl(req)
-    const url = `${baseImageUrl}profile/${file.originalname}`.replace(/ /g, '')
+
+    const newFilePath = `${baseImageUrl}profile/${file.originalname}`.replace(
+      / /g,
+      ''
+    )
+    const url = newFilePath
 
     await serviceHandler.userService.changeProfileImage({
       userId,
