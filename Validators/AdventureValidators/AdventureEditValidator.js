@@ -105,6 +105,8 @@ const adventureEditValidator = () => {
         return true
       })
       .customSanitizer((fields) => {
+        if (!fields) return fields
+
         return fields.map((field) => {
           const newField = { ...field }
 
