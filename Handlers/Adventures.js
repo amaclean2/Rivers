@@ -3,7 +3,12 @@ const logger = require('../Config/logger')
 
 const serviceHandler = require('../Config/services')
 const { returnError, sendResponse } = require('../ResponseHandling')
-const { SUCCESS, NO_CONTENT, CREATED } = require('../ResponseHandling/statuses')
+const {
+  SUCCESS,
+  NO_CONTENT,
+  CREATED,
+  NOT_ACCEPTABLE
+} = require('../ResponseHandling/statuses')
 
 const createNewAdventure = async (req, res) => {
   try {
@@ -168,9 +173,33 @@ const editAdventure = async (req, res) => {
       throw returnError({ req, res, error: errors.array()[0] })
     }
 
-    await serviceHandler.adventureService.editAdventure(req.body)
+    let editResponse
 
-    return sendResponse({ req, res, data: {}, status: NO_CONTENT })
+    if (req.body.field) {
+      editResponse = await serviceHandler.adventureService.editAdventure(
+        req.body
+      )
+    } else if (req.body.fields) {
+      editResponse = await Promise.all(
+        req.body.fields.map((field) =>
+          serviceHandler.adventureService.editAdventure({ field })
+        )
+      )
+    } else {
+      throw returnError({
+        req,
+        res,
+        error: 'incorrect fields',
+        status: NOT_ACCEPTABLE
+      })
+    }
+
+    return sendResponse({
+      req,
+      res,
+      data: editResponse,
+      status: SUCCESS
+    })
   } catch (error) {
     return returnError({
       req,
