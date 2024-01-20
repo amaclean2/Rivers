@@ -71,6 +71,10 @@ const adventureEditValidator = () => {
       }),
     body('fields')
       .custom((fields) => {
+        if (!fields) {
+          return true
+        }
+
         fields.forEach((field) => {
           const isCorrect = isDefined(
             field.name,
