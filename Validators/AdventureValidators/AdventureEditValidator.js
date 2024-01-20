@@ -1,5 +1,10 @@
 const { body } = require('express-validator')
-const { isDefined, checkPathObj, convertPathObject } = require('../utils')
+const {
+  isDefined,
+  checkPathObj,
+  convertPathObject,
+  checkElevationsObj
+} = require('../utils')
 
 const adventureEditValidator = () => {
   return [
@@ -19,6 +24,11 @@ const adventureEditValidator = () => {
         // ensure the path object is an array of lat/lng arrays
         if (field.name === 'path') {
           checkPathObj(field.value)
+        }
+
+        // the elevations object should be an array of numbers
+        if (field.name === 'elevations') {
+          checkElevationsObj(field.value)
         }
 
         // block a change if people have already been completing the activity
@@ -60,6 +70,10 @@ const adventureEditValidator = () => {
           field.name = 'trail_path'
           field.value = trailPath
         }
+        if (field.name === 'elevations') {
+          const modifiedElevations = convertPathObject(field.value)
+          field.value = modifiedElevations
+        }
         if (field.name === 'distance') {
           if (field.adventure_type === 'ski') {
             field.name = 'approach_distance'
@@ -86,6 +100,11 @@ const adventureEditValidator = () => {
           // ensure the path object is an array of lat/lng arrays
           if (field.name === 'path') {
             checkPathObj(field.value)
+          }
+
+          // the elevations object should be an array of numbers
+          if (field.name === 'elevations') {
+            checkElevationsObj(field.value)
           }
 
           // block a change if people have already been completing the activity
@@ -131,6 +150,10 @@ const adventureEditValidator = () => {
 
             newField.name = 'trail_path'
             newField.value = trailPath
+          }
+          if (field.name === 'elevations') {
+            const modifiedElevations = convertPathObject(field.value)
+            newField.value = modifiedElevations
           }
           if (field.name === 'distance') {
             if (field.adventure_type === 'ski') {

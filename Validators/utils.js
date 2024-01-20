@@ -17,6 +17,12 @@ const checkPathObj = (path) => {
   }
 }
 
+const checkElevationsObj = (elevations) => {
+  if (!Array.isArray(elevations)) {
+    throw 'the elevations field must be an array of numbers'
+  }
+}
+
 const convertPathObject = (path) => {
   return JSON.stringify(path)
 }
@@ -24,5 +30,6 @@ const convertPathObject = (path) => {
 module.exports = {
   isDefined,
   checkPathObj,
-  convertPathObject
+  convertPathObject,
+  checkElevationsObj
 }
