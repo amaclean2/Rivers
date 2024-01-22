@@ -12,6 +12,8 @@ const adventureEditValidator = () => {
       .custom((field, { req }) => {
         if (field === undefined && !req.body.fields) {
           throw 'field object containing name, value, adventure_id, and adventure_type must be present in the body'
+        } else if (field === undefined) {
+          return true
         }
 
         const isCorrect = isDefined(
@@ -20,16 +22,6 @@ const adventureEditValidator = () => {
           field.adventure_id,
           field.adventure_type
         )
-
-        // ensure the path object is an array of lat/lng arrays
-        if (field.name === 'path') {
-          checkPathObj(field.value)
-        }
-
-        // the elevations object should be an array of numbers
-        if (field.name === 'elevations') {
-          checkElevationsObj(field.value)
-        }
 
         // block a change if people have already been completing the activity
         if (field.name === 'difficulty') {
@@ -47,11 +39,16 @@ const adventureEditValidator = () => {
           throw 'rating cannot be edited'
         }
 
-        if (!isCorrect) throw 'editFieldFormat'
+        if (!isCorrect)
+          throw 'required fields are missing for single-property edit'
 
         return true
       })
       .customSanitizer((field) => {
+        if (!field) {
+          return field
+        }
+
         if (
           [
             'distance',
@@ -64,16 +61,6 @@ const adventureEditValidator = () => {
           field.value = parseFloat(field.value)
         }
 
-        if (field.name === 'path') {
-          const trailPath = convertPathObject(field.value)
-
-          field.name = 'trail_path'
-          field.value = trailPath
-        }
-        if (field.name === 'elevations') {
-          const modifiedElevations = convertPathObject(field.value)
-          field.value = modifiedElevations
-        }
         if (field.name === 'distance') {
           if (field.adventure_type === 'ski') {
             field.name = 'approach_distance'
@@ -97,16 +84,6 @@ const adventureEditValidator = () => {
             field.adventure_type
           )
 
-          // ensure the path object is an array of lat/lng arrays
-          if (field.name === 'path') {
-            checkPathObj(field.value)
-          }
-
-          // the elevations object should be an array of numbers
-          if (field.name === 'elevations') {
-            checkElevationsObj(field.value)
-          }
-
           // block a change if people have already been completing the activity
           if (field.name === 'difficulty') {
             const [difficultyValue, iterations] = field.value.split(':')
@@ -123,7 +100,8 @@ const adventureEditValidator = () => {
             throw 'rating cannot be edited'
           }
 
-          if (!isCorrect) throw 'editFieldFormat'
+          if (!isCorrect)
+            throw `required fields are missing for multiple-property edit, property: ${field.name}`
         })
         return true
       })
@@ -145,16 +123,6 @@ const adventureEditValidator = () => {
             newField.value = parseFloat(field.value)
           }
 
-          if (field.name === 'path') {
-            const trailPath = convertPathObject(field.value)
-
-            newField.name = 'trail_path'
-            newField.value = trailPath
-          }
-          if (field.name === 'elevations') {
-            const modifiedElevations = convertPathObject(field.value)
-            newField.value = modifiedElevations
-          }
           if (field.name === 'distance') {
             if (field.adventure_type === 'ski') {
               newField.name = 'approach_distance'

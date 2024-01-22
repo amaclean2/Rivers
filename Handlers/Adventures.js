@@ -166,6 +166,68 @@ const getAdventureDetails = async (req, res) => {
   }
 }
 
+const editPath = async (req, res) => {
+  try {
+    const { field } = req.body
+    if (!field) {
+      throw returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        message: 'field property must be included in the body'
+      })
+    }
+
+    if (!field.path || !field.elevations) {
+      throw returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        message: 'path property and elevations must be in the field'
+      })
+    }
+
+    if (!field.adventure_id || !field.adventure_type) {
+      throw returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        message:
+          'adventure_id and adventure_type properties must be in the field'
+      })
+    }
+
+    if (!Array.isArray(field.path || !Array.isArray(field.elevations))) {
+      throw returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        message: 'path and elevations must be arrays'
+      })
+    }
+
+    field.path = JSON.stringify(field.path)
+    field.elevations = JSON.stringify(field.elevations)
+
+    logger.info(`starting path edit for ${field.adventure_id}`)
+
+    const editResponse = await serviceHandler.adventureService.editAdventure({
+      field
+    })
+
+    logger.info(`finished path edit for ${field.adventure_id}`)
+
+    return sendResponse({ req, res, data: editResponse, status: SUCCESS })
+  } catch (error) {
+    return returnError({
+      req,
+      res,
+      message: 'Server Error: could not edit path',
+      error
+    })
+  }
+}
+
 const editAdventure = async (req, res) => {
   try {
     const errors = validationResult(req)
@@ -180,11 +242,15 @@ const editAdventure = async (req, res) => {
         req.body
       )
     } else if (req.body.fields) {
-      editResponse = await Promise.all(
-        req.body.fields.map((field) =>
-          serviceHandler.adventureService.editAdventure({ field })
+      editResponse = []
+
+      for (const field of req.body.fields) {
+        logger.info('starting next database update')
+        editResponse.push(
+          await serviceHandler.adventureService.editAdventure({ field })
         )
-      )
+        logger.info('rivers update step complete')
+      }
     } else {
       throw returnError({
         req,
@@ -247,6 +313,18 @@ const deleteAdventure = async (req, res) => {
   }
 }
 
+const deletePath = async (req, res) => {
+  try {
+    const { adventure_id, adventure_type } = req.query
+    await serviceHandler.adventureService.editAdventure({
+      field: { path: '[]', adventure_id, adventure_type }
+    })
+    return sendResponse({ req, res, status: NO_CONTENT })
+  } catch (error) {
+    return returnError({ req, res, message: 'serverDeleteAdventure', error })
+  }
+}
+
 module.exports = {
   getAllAdventures,
   searchAdventures,
@@ -255,6 +333,8 @@ module.exports = {
   importBulkData,
   createNewAdventure,
   editAdventure,
+  editPath,
   deleteAdventure,
+  deletePath,
   getAdventuresByDistance
 }
