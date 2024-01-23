@@ -7,28 +7,11 @@ const jwt = require('jsonwebtoken')
 const router = require('./Routing')
 const { corsHandler } = require('./Config/cors')
 const { returnError, NOT_ACCEPTABLE } = require('./ResponseHandling')
+const ValidUrls = require('./Validators/ValidUrls')
 
 config()
 
 const app = express()
-
-const validUrls = [
-  'GET:/services',
-  'GET:favicon',
-  'GET:/adventures/all',
-  'GET:/adventures/search',
-  'GET:/adventures/adventureTypes',
-  'GET:/adventures/details',
-  'GET:/adventures/distance',
-  'POST:/savePasswordReset',
-  'POST:/resetPassword',
-  'GET:/verify',
-  'POST:/users/login',
-  'POST:/users',
-  'POST:/users/passwordResetLink',
-  'POST:/users/newPassword',
-  'GET:/images'
-]
 
 app.use(express.static('/home/app/public'))
 app.use(express.urlencoded({ extended: false }))
@@ -51,7 +34,7 @@ app.use((req, res, next) => {
     const method = req.method.toUpperCase()
     const searchUrl = `${method}:${url}`
 
-    const noAuthRequired = validUrls.some((url) => searchUrl.includes(url))
+    const noAuthRequired = ValidUrls.some((url) => searchUrl.includes(url))
 
     if (noAuthRequired) {
       resolve(true)
