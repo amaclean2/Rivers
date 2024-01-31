@@ -3,9 +3,9 @@ const { adventureTypes } = require('../../Config/utils')
 
 const requireAdventureType = body('adventure_type').custom((value) => {
   if (value === undefined)
-    throw 'adventure_type property is required to be one of "ski", "climb", "hike", or "bike"'
+    throw 'adventure_type property is required to be one of "ski", "climb", "hike", "bike", or "skiApproach"'
   if (!adventureTypes.includes(value))
-    throw 'adventure_type property is required to be one of "ski", "climb", "hike", or "bike"'
+    throw 'adventure_type property is required to be one of "ski", "climb", "hike", "bike", or "skiApproach"'
 
   return true
 })
@@ -94,7 +94,9 @@ const sanitizeAdventureRating = body('rating').customSanitizer((value) => {
 
 const formatAdventureTrailPath = body('path')
   .custom((value, { req }) => {
-    if (['ski', 'hike', 'bike'].includes(req.body.adventure_type)) {
+    if (
+      ['ski', 'hike', 'bike', 'skiApproach'].includes(req.body.adventure_type)
+    ) {
       if (value === undefined) return true
       else if (typeof value === 'object') return true
       else {
@@ -112,33 +114,18 @@ const formatAdventureTrailPath = body('path')
     return value
   })
 
-const formatAdventureDistance = body('distance')
-  .custom((value, { req }) => {
-    if (['ski', 'hike', 'bike'].includes(req.body.adventure_type)) {
-      if (value === undefined) return true
-      if (typeof value === 'number') {
-        return true
-      } else {
-        throw 'distance value must be a number'
-      }
+const formatAdventureDistance = body('distance').custom((value, { req }) => {
+  if (['skiApproach', 'hike', 'bike'].includes(req.body.adventure_type)) {
+    if (value === undefined) return true
+    if (typeof value === 'number') {
+      return true
+    } else {
+      throw 'distance value must be a number'
     }
+  }
 
-    return true
-  })
-  .customSanitizer((value, { req }) => {
-    if (value !== undefined) {
-      if (req.body.adventure_type === 'ski') {
-        req.body.approach_distance = value.toString()
-        delete req.body.distance
-      }
-    }
-
-    return value
-  })
-
-// the following types only apply if `adventure_type` is "climb"
-
-// the following types only apply if `adventure_type` is "hike"
+  return true
+})
 
 const adventureCreateValidator = () => {
   return [

@@ -1,10 +1,5 @@
 const { body } = require('express-validator')
-const {
-  isDefined,
-  checkPathObj,
-  convertPathObject,
-  checkElevationsObj
-} = require('../utils')
+const { isDefined } = require('../utils')
 
 const adventureEditValidator = () => {
   return [
@@ -61,13 +56,6 @@ const adventureEditValidator = () => {
           field.value = parseFloat(field.value)
         }
 
-        if (field.name === 'distance') {
-          if (field.adventure_type === 'ski') {
-            field.name = 'approach_distance'
-            field.value = field.value.toString()
-          }
-        }
-
         return field
       }),
     body('fields')
@@ -121,13 +109,6 @@ const adventureEditValidator = () => {
             typeof field.value !== 'number'
           ) {
             newField.value = parseFloat(field.value)
-          }
-
-          if (field.name === 'distance') {
-            if (field.adventure_type === 'ski') {
-              newField.name = 'approach_distance'
-              newField.value = field.value.toString()
-            }
           }
 
           return newField

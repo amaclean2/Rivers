@@ -17,6 +17,8 @@ const createNewAdventure = async (req, res) => {
       throw returnError({ req, res, error: errors.array()[0] })
     }
 
+    logger.info(`Creating a new adventure of type: ${req.body?.adventure_type}`)
+
     const { adventure, adventureList } =
       await serviceHandler.adventureService.createAdventure({
         adventureObject: req.body
@@ -67,6 +69,7 @@ const importBulkData = async (req, res) => {
   }
 }
 
+// this function uses adventure types
 const getAllAdventures = async (req, res) => {
   try {
     // handle the response from the validation middleware
@@ -79,7 +82,21 @@ const getAllAdventures = async (req, res) => {
     const { type } = req.query
 
     if (!type) {
-      throw 'type query parameter required'
+      throw returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        message: 'type query prameter required'
+      })
+    } else if (
+      !['ski', 'hike', 'bike', 'skiApproach', 'climb'].includes(type)
+    ) {
+      throw returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        message: 'type query parameters must be one of the supported types'
+      })
     }
 
     const adventures = await serviceHandler.adventureService.getAdventureList({
@@ -143,11 +160,17 @@ const getAdventuresByDistance = async (req, res) => {
 const getAdventureDetails = async (req, res) => {
   try {
     const { id, type } = req.query
-    if (!id) {
-      throw returnError({ req, res, message: 'adventureIdFieldRequired' })
+    if (!id || !type) {
+      throw returnError({
+        req,
+        res,
+        message: 'adventure id and type fields are required'
+      })
     }
 
-    logger.info(JSON.stringify({ id, type }))
+    logger.info(
+      `getting adventure details for adventure ${id} of type: ${type}`
+    )
 
     const adventure =
       await serviceHandler.adventureService.getSpecificAdventure({
@@ -245,11 +268,10 @@ const editAdventure = async (req, res) => {
       editResponse = []
 
       for (const field of req.body.fields) {
-        logger.info('starting next database update')
+        logger.info('starting next database update for adventures')
         editResponse.push(
           await serviceHandler.adventureService.editAdventure({ field })
         )
-        logger.info('rivers update step complete')
       }
     } else {
       throw returnError({
