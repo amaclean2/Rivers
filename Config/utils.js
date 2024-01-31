@@ -1,4 +1,4 @@
-const adventureTypes = ['ski', 'climb', 'hike', 'bike']
+const adventureTypes = ['ski', 'climb', 'hike', 'bike', 'skiApproach']
 
 module.exports = {
   adventureTypes
