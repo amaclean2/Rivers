@@ -7,7 +7,6 @@ const {
   NOT_FOUND
 } = require('../ResponseHandling')
 const serviceHandler = require('../Config/services')
-const logger = require('../Config/logger')
 
 const addConversation = async (req, res) => {
   try {
@@ -29,6 +28,8 @@ const addConversation = async (req, res) => {
 
     const { id_from_token } = req.body
     const userIds = [id_from_token, ...req.body.user_ids]
+
+    req.logger.info('Creating a new conversation')
 
     const response = await serviceHandler.messagingService.createConversation({
       userIds
@@ -77,6 +78,8 @@ const addUserToConversation = async (req, res) => {
       })
     }
 
+    req.logger.info(`Adding a user to a conversation ${conversation_id}`)
+
     await serviceHandler.messagingService.expandConversation({
       userId: user_id,
       conversationId: conversation_id
@@ -102,6 +105,8 @@ const getConversations = async (req, res) => {
   try {
     const { id_from_token } = req.body
 
+    req.logger.info('getting all conversations')
+
     const conversations =
       await serviceHandler.messagingService.getConversationsPerUser({
         userId: id_from_token
@@ -120,7 +125,7 @@ const getConversations = async (req, res) => {
 
 const deleteConversation = async (req, res) => {
   try {
-    logger.info('delete conversation not ready')
+    req.logger.info('delete conversation not ready')
     throw returnError({
       req,
       res,

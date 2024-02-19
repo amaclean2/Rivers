@@ -1,4 +1,3 @@
-const logger = require('../Config/logger')
 const errorTexts = require('./ResponseText/errors')
 const { SERVER_ERROR } = require('./statuses')
 
@@ -43,8 +42,9 @@ const returnError = ({
 
   errorBody.code_error = error
 
-  logger.error(messageText)
-  logger.error(JSON.stringify(error))
+  req.logger.error(messageText)
+  req.logger.error(error)
+  req.logger.error(JSON.stringify(error))
 
   res.status(messageCode ? messageCode : SERVER_ERROR).json({
     error: errorBody,

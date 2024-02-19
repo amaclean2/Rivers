@@ -8,7 +8,11 @@ const createTodo = async (req, res) => {
     if (!errors.isEmpty()) {
       return returnError({ req, res, error: errors.array()[0] })
     }
+
     const { user_id, adventure_id, public: publicField } = req.body
+
+    req.logger.info(`marking adventure ${adventure_id} todo`)
+
     const { userTodo, adventureTodo } =
       await serviceHandler.userService.addAdventureTodo({
         userId: user_id,

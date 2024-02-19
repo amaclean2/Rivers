@@ -1,5 +1,4 @@
 const { validationResult } = require('express-validator')
-const logger = require('../Config/logger')
 
 const serviceHandler = require('../Config/services')
 const { returnError, sendResponse } = require('../ResponseHandling')
@@ -17,7 +16,9 @@ const createNewAdventure = async (req, res) => {
       throw returnError({ req, res, error: errors.array()[0] })
     }
 
-    logger.info(`Creating a new adventure of type: ${req.body?.adventure_type}`)
+    req.logger.info(
+      `Creating a new adventure of type: ${req.body?.adventure_type}`
+    )
 
     const { adventure, adventureList } =
       await serviceHandler.adventureService.createAdventure({
@@ -38,6 +39,8 @@ const createNewAdventure = async (req, res) => {
 const importBulkData = async (req, res) => {
   try {
     const { adventures, id_from_token } = req.body
+
+    req.logger.info('Inserting many adventures')
 
     if (!adventures)
       throw 'an object with the key "adventures" needs to be provided'
@@ -69,7 +72,7 @@ const importBulkData = async (req, res) => {
   }
 }
 
-// this function uses adventure types
+// fetch all the adventures relative to a given adventure type
 const getAllAdventures = async (req, res) => {
   try {
     // handle the response from the validation middleware
@@ -78,7 +81,6 @@ const getAllAdventures = async (req, res) => {
       throw returnError({ req, res, error: errors.array()[0] })
     }
 
-    // get the parameters from the request body
     const { type } = req.query
 
     if (!type) {
@@ -99,6 +101,8 @@ const getAllAdventures = async (req, res) => {
       })
     }
 
+    req.logger.info(`fetching all adventures of type ${req.query.type}`)
+
     const adventures = await serviceHandler.adventureService.getAdventureList({
       adventureType: type
     })
@@ -116,6 +120,8 @@ const searchAdventures = async (req, res) => {
     if (!search) {
       throw 'The search query parameter is required to search for an adventure'
     }
+
+    req.logger.info(`searching for adventures with term ${search}`)
 
     const adventures =
       await serviceHandler.adventureService.searchForAdventures({ search })
@@ -136,13 +142,17 @@ const getAdventuresByDistance = async (req, res) => {
     const { coordinates_lat, coordinates_lng, adventure_type, count } =
       req.query
     if (!(coordinates_lat && coordinates_lng && adventure_type)) {
-      throw 'Coordinates_lat and coordinates_lng and adventure_type are required in the query parameters. Count is optional'
+      throw 'coordinates_lat, coordinates_lng and adventure_type are required in the query parameters. count is optional'
     }
 
     const coordinates = {
       lat: Number(coordinates_lat),
       lng: Number(coordinates_lng)
     }
+
+    req.logger.info(
+      `getting adventures relative to coordinates {lat: ${coordinates.lat}, lng: ${coordinates.lng}}`
+    )
 
     const adventures =
       await serviceHandler.adventureService.getClosestAdventures({
@@ -168,7 +178,7 @@ const getAdventureDetails = async (req, res) => {
       })
     }
 
-    logger.info(
+    req.logger.info(
       `getting adventure details for adventure ${id} of type: ${type}`
     )
 
@@ -232,13 +242,11 @@ const editPath = async (req, res) => {
     field.path = JSON.stringify(field.path)
     field.elevations = JSON.stringify(field.elevations)
 
-    logger.info(`starting path edit for ${field.adventure_id}`)
+    req.logger.info(`starting path edit for ${field.adventure_id}`)
 
     const editResponse = await serviceHandler.adventureService.editAdventure({
       field
     })
-
-    logger.info(`finished path edit for ${field.adventure_id}`)
 
     return sendResponse({ req, res, data: editResponse, status: SUCCESS })
   } catch (error) {
@@ -261,6 +269,7 @@ const editAdventure = async (req, res) => {
     let editResponse
 
     if (req.body.field) {
+      req.logger.info(`editing adventure ${req.body.field.adventure_id}`)
       editResponse = await serviceHandler.adventureService.editAdventure(
         req.body
       )
@@ -268,7 +277,7 @@ const editAdventure = async (req, res) => {
       editResponse = []
 
       for (const field of req.body.fields) {
-        logger.info('starting next database update for adventures')
+        req.logger.info('starting next update for adventures')
         editResponse.push(
           await serviceHandler.adventureService.editAdventure({ field })
         )
@@ -301,6 +310,9 @@ const editAdventure = async (req, res) => {
 const processCSV = async (req, res) => {
   try {
     const { csvString } = req.body
+
+    req.logger.info('csv string parsing')
+
     const jsonAdventureObject =
       await serviceHandler.adventureService.processCSVToAdventure({ csvString })
 
@@ -324,6 +336,8 @@ const deleteAdventure = async (req, res) => {
   try {
     const { adventure_id, adventure_type } = req.query
 
+    req.logger.info(`deleting adventure ${adventure_id}`)
+
     await serviceHandler.adventureService.deleteAdventure({
       adventureId: Number(adventure_id),
       adventureType: adventure_type
@@ -338,6 +352,9 @@ const deleteAdventure = async (req, res) => {
 const deletePath = async (req, res) => {
   try {
     const { adventure_id, adventure_type } = req.query
+
+    req.logger.info(`deleting path from adventure ${adventure_id}`)
+
     await serviceHandler.adventureService.editAdventure({
       field: { path: '[]', adventure_id, adventure_type }
     })

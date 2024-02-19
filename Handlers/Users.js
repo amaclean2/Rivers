@@ -22,6 +22,8 @@ const createUser = async (req, res) => {
     const { email, password, first_name, last_name, password_2, native } =
       req.body
 
+    req.logger.info('Creating a new user')
+
     const newUserResponse = await serviceHandler.userService.addNewUser({
       email,
       password,
@@ -52,6 +54,8 @@ const loginUser = async (req, res) => {
 
     const { email, password, native } = req.body
 
+    req.body.info('user login')
+
     const loginUserResponse =
       await serviceHandler.userService.loginWithEmailAndPassword({
         email,
@@ -78,6 +82,8 @@ const getUserById = async (req, res) => {
     const { id } = req.query
     if (!id) throw returnError({ req, res, message: 'idQueryRequired' })
 
+    req.logger.info(`retrieving user ${id}`)
+
     const retrievedUser = await serviceHandler.userService.getUserFromId({
       userId: id
     })
@@ -96,6 +102,9 @@ const getUserById = async (req, res) => {
 const getLoggedInUser = async (req, res) => {
   try {
     const { id_from_token } = req.body
+
+    req.logger.info('fetching saved user')
+
     const loggedInUser = await serviceHandler.userService.getPresignedInUser({
       userId: id_from_token
     })
@@ -117,6 +126,9 @@ const resetPassword = async (req, res) => {
     if (!errors.isEmpty()) {
       throw returnError({ req, res, error: errors.array()[0] })
     }
+
+    req.logger.info('sending password reset token')
+
     const { email } = req.body
     const verification =
       await serviceHandler.passwordService.sendPasswordResetEmail({ email })
@@ -144,6 +156,8 @@ const savePasswordReset = async (req, res) => {
       throw returnError({ req, res, error: errors.array()[0] })
     }
 
+    req.body.info('saving new password')
+
     const { password, reset_token } = req.body
     const updatePasswordResponse =
       await serviceHandler.passwordService.saveNewPassword({
@@ -166,6 +180,8 @@ const searchAmongUsers = async (req, res) => {
   try {
     const { search } = req.query
 
+    req.logger.info(`searching for users with string: ${search}`)
+
     const users = await serviceHandler.userService.searchForUsers({
       searchString: search
     })
@@ -185,6 +201,8 @@ const searchAmongFriends = async (req, res) => {
   try {
     const { search } = req.query
     const { id_from_token } = req.body
+
+    req.logger.info(`searching for friends with string: ${search}`)
 
     const users = await serviceHandler.userService.searchForFriends({
       searchString: search,
@@ -215,6 +233,8 @@ const followUser = async (req, res) => {
         message: 'The leader_id must be different than your user id.'
       })
     }
+
+    req.logger.info(`following new user: ${leader_id}`)
 
     const followResponse = await serviceHandler.userService.friendUser({
       leaderId: Number(leader_id),
@@ -247,6 +267,8 @@ const editUser = async (req, res) => {
       field: { name: fieldName, value: fieldValue }
     } = req.body
 
+    req.logger.info(`editing field ${fieldName}`)
+
     await serviceHandler.userService.editUser({
       userId,
       fieldName,
@@ -262,6 +284,9 @@ const editUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const { id_from_token } = req.body
+
+    req.logger.info('deleting user')
+
     await serviceHandler.userService.deleteUser({ userId: id_from_token })
 
     res.status(NO_CONTENT).json({

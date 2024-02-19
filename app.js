@@ -8,6 +8,7 @@ const router = require('./Routing')
 const { corsHandler } = require('./Config/cors')
 const { returnError, NOT_ACCEPTABLE } = require('./ResponseHandling')
 const ValidUrls = require('./Validators/ValidUrls')
+const logger = require('./Config/logger')
 
 config()
 
@@ -27,8 +28,8 @@ app.use(
   })
 )
 
-app.use((req, res, next) => {
-  return new Promise((resolve, reject) => {
+app.use(async (req, res, next) => {
+  try {
     const bearerToken = req.headers?.authorization?.split(' ').pop()
     const url = req.originalUrl
     const method = req.method.toUpperCase()
@@ -36,38 +37,42 @@ app.use((req, res, next) => {
 
     const noAuthRequired = ValidUrls.some((url) => searchUrl.includes(url))
 
+    let validation
+
     if (noAuthRequired) {
-      resolve(true)
+      validation = 'skipped'
     }
 
     if (bearerToken === undefined) {
-      reject(
-        `there was no authorization token provided for ${searchUrl} from ${req.ip}`
-      )
+      throw `there was no authorization token provided for ${searchUrl} from ${req.ip}`
     } else {
-      jwt.verify(bearerToken, process.env.JWT_SECRET, {}, (error, decoded) => {
-        if (error) reject(error)
-
-        resolve({ idFromToken: decoded.id })
-      })
+      const decoded = jwt.verify(bearerToken, process.env.JWT_SECRET)
+      validation = { idFromToken: decoded.id }
     }
-  })
-    .then((validationResponse) => {
-      if (validationResponse === true) {
-        next()
-      } else {
-        if (req.body) {
-          req.body.id_from_token = validationResponse.idFromToken
-        } else {
-          req.body = { id_from_token: validationResponse.idFromToken }
-        }
 
-        next()
+    if (validation === 'skipped') {
+      req.logger = logger.child({ userId: null, service: 'rivers' })
+      next()
+    } else if (validation.idFromToken) {
+      // add a logger with a userId token
+      req.logger = logger.child({
+        userId: validation.idFromToken,
+        service: 'rivers'
+      })
+
+      if (req.body) {
+        req.body.id_from_token = validation.idFromToken
+      } else {
+        req.body = { id_from_token: validation.idFromToken }
       }
-    })
-    .catch((error) => {
-      return returnError({ req, res, status: NOT_ACCEPTABLE, message: error })
-    })
+      next()
+    } else {
+      throw `token ${bearerToken} could not be verified`
+    }
+  } catch (error) {
+    logger.error(error)
+    return returnError({ req, res, status: NOT_ACCEPTABLE, error })
+  }
 }, router)
 
 module.exports = app

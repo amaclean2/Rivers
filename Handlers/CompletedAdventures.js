@@ -6,7 +6,6 @@ const {
 } = require('../ResponseHandling')
 const serviceHandler = require('../Config/services')
 const { validationResult } = require('express-validator')
-const logger = require('../Config/logger')
 
 const completeAdventure = async (req, res) => {
   try {
@@ -26,7 +25,9 @@ const completeAdventure = async (req, res) => {
       old_difficulty
     } = req.body
 
-    logger.info(
+    req.logger.info('completing an adventure')
+
+    req.logger.info(
       JSON.stringify({
         user_id,
         adventure_id,

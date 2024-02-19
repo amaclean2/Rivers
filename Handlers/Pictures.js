@@ -14,7 +14,6 @@ const {
   returnError,
   SERVER_ERROR
 } = require('../ResponseHandling')
-const logger = require('../Config/logger')
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -37,6 +36,8 @@ const handleSaveImage = async (req, res) => {
   try {
     // userId needs to be pulled before multer acts on the request
     const userId = req.body.id_from_token
+
+    req.logger.info('saving image')
 
     await uploadPromisified(req, res)
 
@@ -90,6 +91,8 @@ const deletePicture = async (req, res) => {
       throw `URL parameter: ${url} is incorrect`
     }
 
+    req.logger.info('deleting picture')
+
     await serviceHandler.userService.removeGalleryImage({ url })
 
     return sendResponse({
@@ -107,6 +110,12 @@ const deleteProfilePicture = async (req, res) => {
   const userId = req.body.id_from_token
   const oldUrl = req.body.old_url
 
+  if (!userId || !oldUrl) {
+    throw 'userId and the profile picture url are required to delete the picture'
+  }
+
+  req.logger.info('deleting profile picture')
+
   await serviceHandler.userService.removeProfileImage({ userId, oldUrl })
 
   return sendResponse({
@@ -123,7 +132,7 @@ const changeProfilePicture = async (req, res) => {
 
     await uploadPromisified(req, res)
 
-    logger.info(`Image has been uploaded: ${req.file.originalname}`)
+    req.logger.info(`Image has been uploaded: ${req.file.originalname}`)
 
     const {
       file,
