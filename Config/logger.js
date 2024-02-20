@@ -3,7 +3,7 @@ require('winston-mongodb')
 
 const logger = winston.createLogger({
   level: 'silly',
-  format: winston.format.cli(),
+  format: winston.format.json(),
   transports: [new winston.transports.Console()]
 })
 
@@ -17,7 +17,8 @@ if (process.env.NODE_ENV === 'production') {
       tryReconnect: true,
       options: {
         useUnifiedTopology: true
-      }
+      },
+      format: winston.format.json()
     })
   )
 }
