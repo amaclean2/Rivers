@@ -7,6 +7,7 @@ module.exports = [
   'GET:/adventures/adventureTypes',
   'GET:/adventures/details',
   'GET:/adventures/distance',
+  'GET:/users/emailOptOut',
   'POST:/savePasswordReset',
   'POST:/resetPassword',
   'GET:/verify',
