@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'production') {
       level: 'info',
       db: `mongodb+srv://byf:${process.env.MONGO_PASS}@splogging.lpeaxvy.mongodb.net/?retryWrites=true&w=majority`,
       dbName: 'spLogging',
-      collection: 'test_logs',
+      collection: 'river_logs',
       tryReconnect: true,
       options: {
         useUnifiedTopology: true
