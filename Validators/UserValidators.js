@@ -64,24 +64,29 @@ const userCreateValidator = () => {
       })
       .bail(),
     body('first_name')
-      .optional()
-      .isAlpha()
-      .bail()
-      .withMessage('flNameAlpha')
-      .not()
-      .isEmpty()
-      .bail()
-      .trim(),
+      .custom((value) => {
+        if (!value) throw 'first_name and last_name fields are required'
+
+        return true
+      })
+      .customSanitizer((value) => {
+        // eslint-disable-next-line
+        const excludedRegex = / |[1-9]|[.?!\{\}\(\)\[\]\-+;=*&%$#@#,":']/g
+        const newValue = value.replace(excludedRegex, '')
+        return newValue
+      }),
     body('last_name')
-      .optional()
-      .isAlpha()
-      .bail()
-      .withMessage('flNameAlpha')
-      .not()
-      .isEmpty()
-      .bail()
-      .trim()
-      .bail(),
+      .custom((value) => {
+        if (!value) throw 'first_name and last_name fields are required'
+
+        return true
+      })
+      .customSanitizer((value) => {
+        // eslint-disable-next-line
+        const excludedRegex = / |[1-9]|[.?!\{\}\(\)\[\]\-+;=*&%$#@#,":']/g
+        const newValue = value.replace(excludedRegex, '')
+        return newValue
+      }),
     body('legal')
       .custom((value) => {
         if (!value) throw 'missingLegal'
@@ -103,16 +108,26 @@ const userCreateValidator = () => {
 
 const userEditValidator = () => {
   return [
-    body('field').custom((field) => {
-      if (!field) {
-        throw 'the field object must be present in the body with name and value properties'
-      }
+    body('field')
+      .custom((field) => {
+        if (!field) {
+          throw 'the field object must be present in the body with name and value properties'
+        }
 
-      const isCorrect = field.name && field.value
-      if (!isCorrect) throw 'editFieldsFormat'
+        const isCorrect = field.name && field.value
+        if (!isCorrect) throw 'editFieldsFormat'
 
-      return true
-    })
+        return true
+      })
+      .customSanitizer((field) => {
+        if (['first_name', 'last_name'].includes(field.name)) {
+          // eslint-disable-next-line
+          const excludedRegex = / |[1-9]|[.?!\{\}\(\)\[\]\-+;=*&%$#@#,":']/g
+          const newValue = field.replace(excludedRegex, '')
+          return newValue
+        }
+        return field
+      })
   ]
 }
 

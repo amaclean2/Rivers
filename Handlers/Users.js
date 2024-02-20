@@ -281,6 +281,36 @@ const editUser = async (req, res) => {
   }
 }
 
+const emailOptOut = async (req, res) => {
+  try {
+    const { email } = req.query
+
+    if (!email) {
+      throw returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        message: 'an email query parameter must be supplied to the request'
+      })
+    }
+
+    req.logger.info('opting out of emails')
+
+    const response = await serviceHandler.userService.optOutOfEmail({
+      userEmail: email
+    })
+
+    return sendResponse({ req, res, data: response, status: SUCCESS })
+  } catch (error) {
+    return returnError({
+      req,
+      res,
+      message: 'failed to opt out of emails',
+      error
+    })
+  }
+}
+
 const deleteUser = async (req, res) => {
   try {
     const { id_from_token } = req.body
@@ -302,6 +332,7 @@ module.exports = {
   getUserById,
   getLoggedInUser,
   resetPassword,
+  emailOptOut,
   createUser,
   savePasswordReset,
   searchAmongUsers,

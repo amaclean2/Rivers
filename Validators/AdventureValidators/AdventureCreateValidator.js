@@ -1,5 +1,6 @@
 const { body } = require('express-validator')
-const { adventureTypes } = require('../../Config/utils')
+
+const adventureTypes = ['ski', 'climb', 'hike', 'bike', 'skiApproach']
 
 const requireAdventureType = body('adventure_type').custom((value) => {
   if (value === undefined)
