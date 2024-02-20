@@ -19,8 +19,6 @@ const {
   editPath,
   deletePath
 } = require('../../Handlers/Adventures')
-const { SUCCESS } = require('../../ResponseHandling/statuses')
-const { adventureTypes } = require('../../Config/utils')
 const { createTodoValidator } = require('../../Validators/TodoValidators')
 const { createTodo } = require('../../Handlers/TodoAdventures')
 const { createValidator } = require('../../Validators/ActivityValidators')
@@ -41,9 +39,5 @@ router.put('/', adventureEditValidator(), editAdventure)
 router.put('/path', editPath)
 router.delete('/', deleteAdventure)
 router.delete('/path', deletePath)
-
-router.get('/adventureTypes', (_, res) =>
-  res.status(SUCCESS).json({ data: adventureTypes, status: SUCCESS })
-)
 
 module.exports = router
