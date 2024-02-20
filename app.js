@@ -41,9 +41,7 @@ app.use(async (req, res, next) => {
 
     if (noAuthRequired) {
       validation = 'skipped'
-    }
-
-    if (bearerToken === undefined) {
+    } else if (bearerToken === undefined) {
       throw `there was no authorization token provided for ${searchUrl} from ${req.ip}`
     } else {
       const decoded = jwt.verify(bearerToken, process.env.JWT_SECRET)

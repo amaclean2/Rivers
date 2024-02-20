@@ -3,6 +3,7 @@ const { SERVER_ERROR } = require('./statuses')
 
 const statuses = require('./statuses')
 const success = require('./success')
+const logger = require('../Config/logger')
 
 const returnError = ({
   req,
@@ -42,9 +43,9 @@ const returnError = ({
 
   errorBody.code_error = error
 
-  req.logger.error(messageText)
-  req.logger.error(error)
-  req.logger.error(JSON.stringify(error))
+  logger.error(messageText)
+  logger.error(error)
+  logger.error(JSON.stringify(error))
 
   res.status(messageCode ? messageCode : SERVER_ERROR).json({
     error: errorBody,
