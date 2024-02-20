@@ -54,7 +54,7 @@ const loginUser = async (req, res) => {
 
     const { email, password, native } = req.body
 
-    req.body.info('user login')
+    req.logger.info('user login')
 
     const loginUserResponse =
       await serviceHandler.userService.loginWithEmailAndPassword({
@@ -156,7 +156,7 @@ const savePasswordReset = async (req, res) => {
       throw returnError({ req, res, error: errors.array()[0] })
     }
 
-    req.body.info('saving new password')
+    req.logger.info('saving new password')
 
     const { password, reset_token } = req.body
     const updatePasswordResponse =

@@ -49,13 +49,14 @@ app.use(async (req, res, next) => {
     }
 
     if (validation === 'skipped') {
-      req.logger = logger.child({ userId: null, service: 'rivers' })
+      req.logger = logger.child({ meta: { userId: null } })
       next()
     } else if (validation.idFromToken) {
       // add a logger with a userId token
       req.logger = logger.child({
-        userId: validation.idFromToken,
-        service: 'rivers'
+        meta: {
+          userId: validation.idFromToken
+        }
       })
 
       if (req.body) {
