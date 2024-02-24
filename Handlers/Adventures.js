@@ -141,6 +141,7 @@ const getAdventuresByDistance = async (req, res) => {
   try {
     const { coordinates_lat, coordinates_lng, adventure_type, count } =
       req.query
+
     if (!(coordinates_lat && coordinates_lng && adventure_type)) {
       throw 'coordinates_lat, coordinates_lng and adventure_type are required in the query parameters. count is optional'
     }
@@ -151,7 +152,7 @@ const getAdventuresByDistance = async (req, res) => {
     }
 
     req.logger.info(
-      `getting adventures relative to coordinates {lat: ${coordinates.lat}, lng: ${coordinates.lng}}`
+      `getting adventures relative to coordinates {lat: ${coordinates.lat}, lng: ${coordinates.lng}} for adventure type: ${adventure_type}`
     )
 
     const adventures =
