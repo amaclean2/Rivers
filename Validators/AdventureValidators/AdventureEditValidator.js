@@ -34,12 +34,18 @@ const adventureEditValidator = () => {
           throw 'rating cannot be edited'
         }
 
+        if (field.name === 'coordinates') {
+          if (!Array.isArray(field.value) || field.value.length !== 2) {
+            throw 'coordinates field must be an array of lng, lat values'
+          }
+        }
+
         if (!isCorrect)
           throw 'required fields are missing for single-property edit'
 
         return true
       })
-      .customSanitizer((field) => {
+      .customSanitizer((field, { req }) => {
         if (!field) {
           return field
         }
@@ -54,6 +60,23 @@ const adventureEditValidator = () => {
           typeof field.value !== 'number'
         ) {
           field.value = parseFloat(field.value)
+        }
+
+        if (field.name === 'coordinates') {
+          req.body.fields = [
+            {
+              name: 'coordinates_lng',
+              value: field.value[0],
+              adventure_id: field.adventure_id,
+              adventure_type: field.adventure_type
+            },
+            {
+              name: 'coordinates_lat',
+              value: field.value[1],
+              adventure_id: field.adventure_id,
+              adventure_type: field.adventure_type
+            }
+          ]
         }
 
         return field
