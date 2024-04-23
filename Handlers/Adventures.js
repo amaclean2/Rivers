@@ -269,12 +269,7 @@ const editAdventure = async (req, res) => {
 
     let editResponse
 
-    if (req.body.field) {
-      req.logger.info(`editing adventure ${req.body.field.adventure_id}`)
-      editResponse = await serviceHandler.adventureService.editAdventure(
-        req.body
-      )
-    } else if (req.body.fields) {
+    if (req.body.fields) {
       editResponse = []
 
       for (const field of req.body.fields) {
@@ -283,6 +278,11 @@ const editAdventure = async (req, res) => {
           await serviceHandler.adventureService.editAdventure({ field })
         )
       }
+    } else if (req.body.field) {
+      req.logger.info(`editing adventure ${req.body.field.adventure_id}`)
+      editResponse = await serviceHandler.adventureService.editAdventure(
+        req.body
+      )
     } else {
       throw returnError({
         req,
