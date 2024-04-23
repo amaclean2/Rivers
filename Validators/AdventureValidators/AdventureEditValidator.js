@@ -1,5 +1,5 @@
 const { body } = require('express-validator')
-const { isDefined } = require('../utils')
+const { isDefined, numFields } = require('../utils')
 
 const adventureEditValidator = () => {
   return [
@@ -77,6 +77,10 @@ const adventureEditValidator = () => {
               adventure_type: field.adventure_type
             }
           ]
+        }
+
+        if (numFields.includes(field.name) && !field.value) {
+          field.value = 0
         }
 
         return field

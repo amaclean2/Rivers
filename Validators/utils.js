@@ -27,9 +27,24 @@ const convertPathObject = (path) => {
   return JSON.stringify(path)
 }
 
+const numFields = [
+  'avg_angle',
+  'max_angle',
+  'summit_elevation',
+  'base_elevation',
+  'exposure',
+  'pitches',
+  'climb',
+  'descent',
+  'coordinates_lat',
+  'coordinates_lng',
+  'public'
+]
+
 module.exports = {
   isDefined,
   checkPathObj,
   convertPathObject,
-  checkElevationsObj
+  checkElevationsObj,
+  numFields
 }
