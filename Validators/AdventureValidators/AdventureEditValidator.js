@@ -41,7 +41,7 @@ const adventureEditValidator = () => {
         }
 
         if (!isCorrect)
-          throw 'required fields are missing for single-property edit'
+          throw 'field object containing name, value, adventure_id, and adventure_type must be present in the body'
 
         return true
       })
@@ -112,7 +112,7 @@ const adventureEditValidator = () => {
           }
 
           if (!isCorrect)
-            throw `required fields are missing for multiple-property edit, property: ${field.name}`
+            throw 'an array of field objects containing name, value, adventure_id, and adventure_type must be present in the body'
         })
         return true
       })
