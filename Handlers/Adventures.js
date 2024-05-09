@@ -274,9 +274,17 @@ const editAdventure = async (req, res) => {
 
       for (const field of req.body.fields) {
         req.logger.info('starting next update for adventures')
-        editResponse.push(
-          await serviceHandler.adventureService.editAdventure({ field })
-        )
+        const resp = await serviceHandler.adventureService.editAdventure({
+          field
+        })
+        if (resp.field.name.includes('coordinate')) {
+          editResponse = {
+            fields: req.body.fields,
+            all_adventures: resp.all_adventures
+          }
+        } else {
+          editResponse.push(resp)
+        }
       }
     } else if (req.body.field) {
       req.logger.info(`editing adventure ${req.body.field.adventure_id}`)
