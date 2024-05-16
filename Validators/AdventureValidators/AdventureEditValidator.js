@@ -81,6 +81,8 @@ const adventureEditValidator = () => {
 
         if (numFields.includes(field.name) && !field.value) {
           field.value = 0
+        } else if (numFields.includes(field.name)) {
+          field.value = parseInt(field.value)
         }
 
         return field
@@ -136,6 +138,12 @@ const adventureEditValidator = () => {
             typeof field.value !== 'number'
           ) {
             newField.value = parseFloat(field.value)
+          }
+
+          if (numFields.includes(field.name) && !field.value) {
+            field.value = 0
+          } else if (numFields.includes(field.name)) {
+            newField.value = parseInt(field.value)
           }
 
           return newField
