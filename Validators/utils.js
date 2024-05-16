@@ -37,8 +37,7 @@ const numFields = [
   'climb',
   'descent',
   'coordinates_lat',
-  'coordinates_lng',
-  'public'
+  'coordinates_lng'
 ]
 
 module.exports = {
