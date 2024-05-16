@@ -40,6 +40,12 @@ const adventureEditValidator = () => {
           }
         }
 
+        if (field.name === 'public') {
+          if (typeof field.value !== 'boolean') {
+            throw 'public should be a boolean true/false'
+          }
+        }
+
         if (!isCorrect)
           throw 'field object containing name, value, adventure_id, and adventure_type must be present in the body'
 
@@ -85,6 +91,8 @@ const adventureEditValidator = () => {
           field.value = parseInt(field.value)
         }
 
+        if (field.name === 'public') field.value = +field.value
+
         return field
       }),
     body('fields')
@@ -117,6 +125,12 @@ const adventureEditValidator = () => {
             throw 'rating cannot be edited'
           }
 
+          if (field.name === 'public') {
+            if (typeof field.value !== 'boolean') {
+              throw 'public should be a boolean true/false'
+            }
+          }
+
           if (!isCorrect)
             throw 'an array of field objects containing name, value, adventure_id, and adventure_type must be present in the body'
         })
@@ -145,6 +159,8 @@ const adventureEditValidator = () => {
           } else if (numFields.includes(field.name)) {
             newField.value = parseInt(field.value)
           }
+
+          if (field.name === 'public') newField.value = +field.value
 
           return newField
         })
