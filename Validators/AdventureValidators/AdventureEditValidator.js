@@ -88,7 +88,7 @@ const adventureEditValidator = () => {
         if (numFields.includes(field.name) && !field.value) {
           field.value = 0
         } else if (numFields.includes(field.name)) {
-          field.value = parseInt(field.value)
+          field.value = parseFloat(field.value)
         }
 
         if (field.name === 'public') field.value = +field.value
@@ -142,25 +142,10 @@ const adventureEditValidator = () => {
         return fields.map((field) => {
           const newField = { ...field }
 
-          if (
-            [
-              'distance',
-              'exposure',
-              'summit_elevation',
-              'base_elevation'
-            ].includes(field.name) &&
-            typeof field.value !== 'number'
-          ) {
+          if (field.name === 'public') newField.value = +field.value
+          else if (numFields.includes(field.name)) {
             newField.value = parseFloat(field.value)
           }
-
-          if (numFields.includes(field.name) && !field.value) {
-            field.value = 0
-          } else if (numFields.includes(field.name)) {
-            newField.value = parseInt(field.value)
-          }
-
-          if (field.name === 'public') newField.value = +field.value
 
           return newField
         })
