@@ -145,5 +145,6 @@ const adventureCreateValidator = () => {
 }
 
 module.exports = {
-  adventureCreateValidator
+  adventureCreateValidator,
+  adventureTypes
 }
