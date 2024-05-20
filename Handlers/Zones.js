@@ -281,11 +281,37 @@ const removeChild = async (req, res) => {
   }
 }
 
+const deleteZone = async (req, res) => {
+  try {
+    const zoneId = req.query?.zone_id
+
+    if (!zoneId) {
+      throw returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        message: 'zone_id query parameter is required'
+      })
+    }
+
+    const children = await serviceHandler.zoneService.deleteZone({ zoneId })
+    return sendResponse({
+      req,
+      res,
+      status: SUCCESS,
+      data: { zone_children: children }
+    })
+  } catch (error) {
+    return returnError({ req, res, status: SERVER_ERROR, error })
+  }
+}
+
 module.exports = {
   getAllZones,
   getZone,
   createZone,
   addChild,
   editMetaData,
-  removeChild
+  removeChild,
+  deleteZone
 }

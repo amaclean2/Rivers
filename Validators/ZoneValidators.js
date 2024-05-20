@@ -26,54 +26,49 @@ const zoneCreateValidator = () => {
 
 const zoneEditValidator = () => {
   return [
-    body('field')
-      .custom((value) => {
-        if (!value.field_name || typeof value.field_name !== 'string') {
-          throw 'string field_name required on field object'
+    body('field').customSanitizer((value) => {
+      if (!value) throw 'field object required in body'
+
+      if (!value?.field_name || typeof value?.field_name !== 'string') {
+        throw 'string field_name required on field object'
+      }
+
+      const editableFieldValues = [
+        'zone_name',
+        'bio',
+        'coordiantes',
+        'nearest_city',
+        'public'
+      ]
+
+      if (!editableFieldValues.includes(value.field_name)) {
+        throw `editable zone fields are only ${editableFieldValues.join(', ')}.`
+      }
+
+      if (!value.field_value) {
+        throw 'field_value required on field object'
+      }
+
+      if (value.field_name === 'coordinates') {
+        if (!value.field_value.lat || !value.field_value.lng) {
+          throw 'coordinates must be an object containing lat and lng properties'
         }
+      }
 
-        const editableFieldValues = [
-          'zone_name',
-          'bio',
-          'coordiantes',
-          'nearest_city',
-          'public'
-        ]
+      if (!value.zone_id) {
+        throw 'zone_id required on field object'
+      }
 
-        if (!editableFieldValues.includes(value.field_name)) {
-          throw `editable zone fields are only ${editableFieldValues.join(
-            ', '
-          )}.`
-        }
+      value = {
+        editField: value.field_name,
+        editValue: value.field_value,
+        editZoneId: value.zone_id
+      }
 
-        if (!value.field_value) {
-          throw 'field_value required on field object'
-        }
+      if (value.editField === 'public') value.editValue = +value.editValue
 
-        if (value.field_name === 'coordinates') {
-          if (!value.field_value.lat || !value.field_value.lng) {
-            throw 'coordinates must be an object containing lat and lng properties'
-          }
-        }
-
-        if (!value.zone_id) {
-          throw 'zone_id required on field object'
-        }
-
-        return true
-      })
-      .customSanitizer((value) => {
-        const sanitized = {
-          editName: value.field_name,
-          editValue: value.field_value,
-          editZoneId: value.zone_id
-        }
-
-        if (sanitized.editName === 'public')
-          sanitized.editValue = +sanitized.editValue
-
-        return sanitized
-      })
+      return value
+    })
   ]
 }
 

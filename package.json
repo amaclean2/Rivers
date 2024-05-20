@@ -1,6 +1,6 @@
 {
   "name": "@amaclean2/sundaypeak-rivers",
-  "version": "1.5.8",
+  "version": "1.5.10",
   "description": "The backend for the Sunday Peak application",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"

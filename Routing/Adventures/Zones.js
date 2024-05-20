@@ -5,7 +5,8 @@ const {
   createZone,
   addChild,
   editMetaData,
-  removeChild
+  removeChild,
+  deleteZone
 } = require('../../Handlers/Zones')
 const {
   zoneCreateValidator,
@@ -22,6 +23,6 @@ router.post('/', zoneCreateValidator(), createZone)
 router.post('/child', addChild)
 router.put('/', zoneEditValidator(), editMetaData)
 router.delete('/child', removeChild)
-router.delete('/', () => {})
+router.delete('/', deleteZone)
 
 module.exports = router
