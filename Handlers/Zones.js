@@ -11,14 +11,14 @@ const {
 
 const getAllZones = async (req, res) => {
   try {
-    const adventureType = req.body?.adventure_type
+    const adventureType = req.query?.adventure_type
 
     if (!adventureType) {
       throw returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
-        message: 'adventure_type parameter required in request body'
+        message: 'adventure_type parameter required in request header'
       })
     }
 
@@ -55,24 +55,25 @@ const createZone = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw returnError({ req, res, error: errors.array()[0] })
-    }
-
-    const newZone = req.body?.zone
-    const creatorId = req.body?.id_from_token
-
-    if (!newZone) {
       throw returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
-        message: 'zone object required in request body'
+        error: errors.array()[0]
       })
     }
 
-    const zone = await serviceHandler.zoneService.createNewZone({
-      zoneParams: { ...newZone, creatorId }
-    })
+    const zoneParams = {
+      adventureType: req.body.adventure_type,
+      zoneName: req.body.zone_name,
+      nearestCity: req.body.nearest_city,
+      coordinatesLat: req.body.coordinates_lat,
+      coordinatesLng: req.body.coordinates_lng,
+      public: req.body.public,
+      creatorId: req.body.id_from_token
+    }
+
+    const zone = await serviceHandler.zoneService.createNewZone({ zoneParams })
 
     return sendResponse({ req, res, data: { zone }, status: CREATED })
   } catch (error) {
@@ -82,7 +83,7 @@ const createZone = async (req, res) => {
 
 const addChild = async (req, res) => {
   try {
-    const parentZoneId = req.body?.parent_zone_id ?? req.body?.parent_zone_id
+    const parentZoneId = req.body?.parent_zone_id
     const adventureId = req.body?.adventure_id
     const childZoneId = req.body?.child_zone_id
     const childType = req.body?.child_type
@@ -96,7 +97,7 @@ const addChild = async (req, res) => {
       })
     }
 
-    if (!req.body?.parentZoneId) {
+    if (!parentZoneId) {
       throw returnError({
         req,
         res,
@@ -114,18 +115,59 @@ const addChild = async (req, res) => {
       })
     }
 
+    if (
+      (childType === 'zone' && !childZoneId) ||
+      (childType === 'adventure' && !adventureId)
+    ) {
+      throw returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        message: 'the child_type and the child id type need to match'
+      })
+    }
+
     let modifiedZone = null
 
     if (childType === 'adventure') {
-      modifiedZone = await serviceHandler.zoneService.addAdventure({
-        zoneId: parentZoneId,
-        adventureId
-      })
+      const compatibleTypes =
+        await serviceHandler.zoneService.getMatchingAdventures({
+          adventureId,
+          zoneId: parentZoneId
+        })
+
+      if (compatibleTypes) {
+        modifiedZone = await serviceHandler.zoneService.addAdventure({
+          zoneId: parentZoneId,
+          adventureId
+        })
+      } else {
+        throw returnError({
+          req,
+          res,
+          status: NOT_ACCEPTABLE,
+          message:
+            'your adventure type and zone type are not compatible to be in the same group'
+        })
+      }
     } else {
-      modifiedZone = await serviceHandler.zoneService.addSubzone({
-        parentZoneId,
-        childZoneId
-      })
+      const compatibleTypes = await serviceHandler.zoneService.getMatchingZones(
+        { parentZoneId, childZoneId }
+      )
+
+      if (compatibleTypes) {
+        modifiedZone = await serviceHandler.zoneService.addSubzone({
+          parentZoneId,
+          childZoneId
+        })
+      } else {
+        throw returnError({
+          req,
+          res,
+          status: NOT_ACCEPTABLE,
+          message: 'your zone types are not compatible to be in the same group'
+        })
+      }
     }
 
     return sendResponse({
@@ -143,7 +185,12 @@ const editMetaData = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw returnError({ req, res, error: errors.array()[0] })
+      throw returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        error: errors.array()[0]
+      })
     }
 
     const editObject = req.body?.field
@@ -191,7 +238,7 @@ const removeChild = async (req, res) => {
       })
     }
 
-    if (!req.body?.parentZoneId) {
+    if (!parentZoneId) {
       throw returnError({
         req,
         res,

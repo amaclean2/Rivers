@@ -48,9 +48,7 @@ const requireAdventurePublic = body('public')
 
     return true
   })
-  .customSanitizer((value) => {
-    return !!value === true ? 1 : 0
-  })
+  .customSanitizer((value) => +value)
 
 const requireAdventureCreatorId = body('id_from_token')
   .custom((value) => {
@@ -146,5 +144,9 @@ const adventureCreateValidator = () => {
 
 module.exports = {
   adventureCreateValidator,
-  adventureTypes
+  adventureTypes,
+  requireAdventureType,
+  requireAdventureCoordinates,
+  requireAdventurePublic,
+  requireAdventureNearestCity
 }

@@ -1,53 +1,26 @@
 const { body } = require('express-validator')
 const {
-  adventureTypes
+  requireAdventureType,
+  requireAdventureCoordinates,
+  requireAdventurePublic,
+  requireAdventureNearestCity
 } = require('./AdventureValidators/AdventureCreateValidator')
+
+const requireZoneName = body('zone_name').custom((value) => {
+  if (!value) throw 'zone_name field is required'
+
+  if (typeof value !== 'string') throw 'zone_name field must be a string'
+
+  return true
+})
 
 const zoneCreateValidator = () => {
   return [
-    body('zone')
-      .custom((value) => {
-        if (!value)
-          throw 'zone property must exist on requirest body for a new zone to be created'
-
-        const zoneProperties = [
-          'adventure_type',
-          'zone_name',
-          'coordinates',
-          'public',
-          'nearest_city'
-        ]
-
-        if (
-          !zoneProperties.every((property) =>
-            Object.values(value).includes(property)
-          )
-        )
-          throw `${zoneProperties.join(', ')} must exist on the zone object`
-
-        if (!adventureTypes.includes(value.adventure_type)) {
-          throw `zone adventure_type must be one of ${adventureTypes.join(
-            ', '
-          )}.`
-        }
-
-        if (!(value.coordinates.lat && value.coordinates.lng)) {
-          throw 'coordiantes must be an object conaining lat and lng properties'
-        }
-
-        return true
-      })
-      .customSanitizer((value) => {
-        const convertedObject = {
-          coordiantesLat: value.coordinates.lat,
-          coordinatesLng: value.coordinates.lng,
-          adventureType: value.adventure_type,
-          zoneName: value.zone_name,
-          nearestCity: value.nearest_city
-        }
-
-        return convertedObject
-      })
+    requireAdventureType,
+    requireZoneName,
+    requireAdventureCoordinates,
+    requireAdventurePublic,
+    requireAdventureNearestCity
   ]
 }
 
