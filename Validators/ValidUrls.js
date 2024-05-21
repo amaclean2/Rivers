@@ -9,10 +9,10 @@ module.exports = [
   'GET:/adventures/details',
   'GET:/adventures/distance',
   // zones
-  'GET:/adventures/zones/all',
-  'GET:/adventures/zones/details',
-  'GET:/adventures/zones/distance',
-  'GET:/adventures/zones/search',
+  'GET:/zones/all',
+  'GET:/zones/details',
+  'GET:/zones/distance',
+  'GET:/zones/search',
   // users
   'GET:/users/emailOptOut',
   'POST:/savePasswordReset',

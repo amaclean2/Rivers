@@ -11,14 +11,14 @@ const {
 
 const getAllZones = async (req, res) => {
   try {
-    const adventureType = req.query?.adventure_type
+    const adventureType = req.query?.type
 
     if (!adventureType) {
       throw returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
-        message: 'adventure_type parameter required in request header'
+        message: '"type" parameter required in request header'
       })
     }
 

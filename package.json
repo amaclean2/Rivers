@@ -1,6 +1,6 @@
 {
   "name": "@amaclean2/sundaypeak-rivers",
-  "version": "1.5.10",
+  "version": "1.5.13",
   "description": "The backend for the Sunday Peak application",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
@@ -19,7 +19,7 @@
     "supertest": "^6.3.3"
   },
   "dependencies": {
-    "@amaclean2/sundaypeak-water": "^1.9.13",
+    "@amaclean2/sundaypeak-water": "^1.9.17",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "env-cmd": "^10.1.0",

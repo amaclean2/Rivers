@@ -23,11 +23,8 @@ const { createTodoValidator } = require('../../Validators/TodoValidators')
 const { createTodo } = require('../../Handlers/TodoAdventures')
 const { createValidator } = require('../../Validators/ActivityValidators')
 const { completeAdventure } = require('../../Handlers/CompletedAdventures')
-const zonesRouter = require('./Zones')
 
 const router = Router()
-
-router.use('/zones', zonesRouter)
 
 router.get('/all', adventuresGetValidator(), getAllAdventures)
 router.get('/details', getAdventureDetails)
