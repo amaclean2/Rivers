@@ -6,7 +6,8 @@ const {
   addChild,
   editMetaData,
   removeChild,
-  deleteZone
+  deleteZone,
+  getZonesByDistance
 } = require('../../Handlers/Zones')
 const {
   zoneCreateValidator,
@@ -18,7 +19,7 @@ const router = Router()
 router.get('/all', getAllZones)
 router.get('/details', getZone)
 router.get('/search', () => {})
-router.get('/distance', () => {})
+router.get('/distance', getZonesByDistance)
 router.post('/', zoneCreateValidator(), createZone)
 router.post('/child', addChild)
 router.put('/', zoneEditValidator(), editMetaData)

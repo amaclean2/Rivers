@@ -32,6 +32,44 @@ const getAllZones = async (req, res) => {
   }
 }
 
+const getZonesByDistance = async (req, res) => {
+  try {
+    const adventureType = req.query?.adventure_type
+    const coordinates = {
+      lat: req.query?.coordinates_lat,
+      lng: req.query?.coordinates_lng
+    }
+
+    if (!adventureType) {
+      throw returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        message: 'adventure_type query parameter is required'
+      })
+    }
+
+    if (!(coordinates.lat && coordinates.lng)) {
+      throw returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        message:
+          'coordinates_lat and coordinates_lng query parameters are required'
+      })
+    }
+
+    const zones = await serviceHandler.zoneService.getZonesByDistance({
+      adventureType,
+      coordinates
+    })
+
+    return sendResponse({ req, res, data: { zones }, status: SUCCESS })
+  } catch (error) {
+    return returnError({ req, res, status: SERVER_ERROR, error })
+  }
+}
+
 const getZone = async (req, res) => {
   try {
     const zoneId = req.query?.zone_id
@@ -309,6 +347,7 @@ const deleteZone = async (req, res) => {
 module.exports = {
   getAllZones,
   getZone,
+  getZonesByDistance,
   createZone,
   addChild,
   editMetaData,
