@@ -29,7 +29,7 @@ const getAllZones = async (req, res) => {
     return sendResponse({
       req,
       res,
-      data: { adventures: allZones },
+      data: { zones: allZones },
       status: SUCCESS
     })
   } catch (error) {
