@@ -26,7 +26,12 @@ const getAllZones = async (req, res) => {
       adventureType
     })
 
-    return sendResponse({ req, res, data: allZones, status: SUCCESS })
+    return sendResponse({
+      req,
+      res,
+      data: { adventures: allZones },
+      status: SUCCESS
+    })
   } catch (error) {
     return returnError({ req, res, status: SERVER_ERROR, error })
   }
