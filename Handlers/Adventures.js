@@ -113,30 +113,6 @@ const getAllAdventures = async (req, res) => {
   }
 }
 
-const searchAdventures = async (req, res) => {
-  try {
-    const { search } = req.query
-
-    if (!search) {
-      throw 'The search query parameter is required to search for an adventure'
-    }
-
-    req.logger.info(`searching for adventures with term ${search}`)
-
-    const adventures =
-      await serviceHandler.adventureService.searchForAdventures({ search })
-
-    return sendResponse({
-      req,
-      res,
-      data: { adventures, search },
-      status: SUCCESS
-    })
-  } catch (error) {
-    return returnError({ req, res, error, message: 'serverGetAdventures' })
-  }
-}
-
 const getAdventuresByDistance = async (req, res) => {
   try {
     const { coordinates_lat, coordinates_lng, adventure_type, count } =
@@ -375,7 +351,6 @@ const deletePath = async (req, res) => {
 
 module.exports = {
   getAllAdventures,
-  searchAdventures,
   processCSV,
   getAdventureDetails,
   importBulkData,

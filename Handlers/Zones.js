@@ -238,16 +238,16 @@ const editMetaData = async (req, res) => {
 
     const editObject = req.body?.field
 
-    if (editObject.editName === 'coordinates') {
+    if (editObject.editField === 'coordinates') {
       await serviceHandler.zoneService.editZone({
         editField: 'coordinates_lat',
-        editValue: editObject.coordinates.lat,
+        editValue: editObject.editValue.lat,
         editZoneId: editObject.editZoneId
       })
 
       await serviceHandler.zoneService.editZone({
         editField: 'coordinates_lng',
-        editValue: editObject.coordinates.lng,
+        editValue: editObject.editValue.lng,
         editZoneId: editObject.editZoneId
       })
     } else {

@@ -36,7 +36,8 @@ const zoneEditValidator = () => {
       const editableFieldValues = [
         'zone_name',
         'bio',
-        'coordiantes',
+        'approach',
+        'coordinates',
         'nearest_city',
         'public'
       ]

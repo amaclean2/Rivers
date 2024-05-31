@@ -4,7 +4,6 @@ module.exports = [
   'GET:favicon',
   // adventures
   'GET:/adventures/all',
-  'GET:/adventures/search',
   'GET:/adventures/adventureTypes',
   'GET:/adventures/details',
   'GET:/adventures/distance',
@@ -12,7 +11,6 @@ module.exports = [
   'GET:/zones/all',
   'GET:/zones/details',
   'GET:/zones/distance',
-  'GET:/zones/search',
   // users
   'GET:/users/emailOptOut',
   'POST:/savePasswordReset',
@@ -22,5 +20,9 @@ module.exports = [
   'POST:/users',
   'POST:/users/passwordResetLink',
   'POST:/users/newPassword',
-  'GET:/images'
+  'GET:/images',
+  // search
+  'GET:/search/users',
+  'GET:/search/adventures',
+  'GET:/search/zones'
 ]

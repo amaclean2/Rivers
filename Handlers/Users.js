@@ -176,50 +176,6 @@ const savePasswordReset = async (req, res) => {
   }
 }
 
-const searchAmongUsers = async (req, res) => {
-  try {
-    const { search } = req.query
-
-    req.logger.info(`searching for users with string: ${search}`)
-
-    const users = await serviceHandler.userService.searchForUsers({
-      searchString: search
-    })
-
-    return sendResponse({
-      req,
-      res,
-      data: { users, search },
-      status: SUCCESS
-    })
-  } catch (error) {
-    return returnError({ req, res, error, message: 'serverGetFriends' })
-  }
-}
-
-const searchAmongFriends = async (req, res) => {
-  try {
-    const { search } = req.query
-    const { id_from_token } = req.body
-
-    req.logger.info(`searching for friends with string: ${search}`)
-
-    const users = await serviceHandler.userService.searchForFriends({
-      searchString: search,
-      userId: id_from_token
-    })
-
-    return sendResponse({
-      req,
-      res,
-      data: { users, search },
-      status: SUCCESS
-    })
-  } catch (error) {
-    return returnError({ req, res, error, message: 'serverGetFriends' })
-  }
-}
-
 const followUser = async (req, res) => {
   try {
     const { id_from_token } = req.body
@@ -335,8 +291,6 @@ module.exports = {
   emailOptOut,
   createUser,
   savePasswordReset,
-  searchAmongUsers,
-  searchAmongFriends,
   followUser,
   editUser,
   deleteUser

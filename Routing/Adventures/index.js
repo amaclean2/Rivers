@@ -12,7 +12,6 @@ const {
   getAdventureDetails,
   getAllAdventures,
   editAdventure,
-  searchAdventures,
   importBulkData,
   processCSV,
   getAdventuresByDistance,
@@ -28,7 +27,6 @@ const router = Router()
 
 router.get('/all', adventuresGetValidator(), getAllAdventures)
 router.get('/details', getAdventureDetails)
-router.get('/search', searchAdventures)
 router.get('/distance', getAdventuresByDistance)
 router.post('/', adventureCreateValidator(), createNewAdventure)
 router.post('/todo', createTodoValidator(), createTodo)

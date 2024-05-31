@@ -18,7 +18,6 @@ const router = Router()
 
 router.get('/all', getAllZones)
 router.get('/details', getZone)
-router.get('/search', () => {})
 router.get('/distance', getZonesByDistance)
 router.post('/', zoneCreateValidator(), createZone)
 router.post('/child', addChild)
