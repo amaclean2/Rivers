@@ -6,6 +6,7 @@ const {
   SUCCESS
 } = require('../ResponseHandling')
 const serviceHandler = require('../Config/services')
+const logger = require('../Config/logger')
 
 const handleUserSearch = async (req, res) => {
   try {
@@ -30,6 +31,8 @@ const handleUserSearch = async (req, res) => {
         message: '`id` parameter must be present in a search query'
       })
     }
+
+    logger.info(`Searching for: ${searchText}`)
 
     const results = await serviceHandler.searchService.userSearch({
       searchText,
