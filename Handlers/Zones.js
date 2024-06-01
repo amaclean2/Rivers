@@ -44,6 +44,7 @@ const getZonesByDistance = async (req, res) => {
       lat: req.query?.coordinates_lat,
       lng: req.query?.coordinates_lng
     }
+    const count = req.query?.count ?? 10
 
     if (!adventureType) {
       throw returnError({
@@ -66,7 +67,8 @@ const getZonesByDistance = async (req, res) => {
 
     const zones = await serviceHandler.zoneService.getZonesByDistance({
       adventureType,
-      coordinates
+      coordinates,
+      count: Number(count)
     })
 
     return sendResponse({ req, res, data: { zones }, status: SUCCESS })
