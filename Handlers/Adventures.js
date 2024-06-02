@@ -115,7 +115,7 @@ const getAllAdventures = async (req, res) => {
 
 const getAdventuresByDistance = async (req, res) => {
   try {
-    const { coordinates_lat, coordinates_lng, adventure_type, count } =
+    const { coordinates_lat, coordinates_lng, adventure_type, count, zone_id } =
       req.query
 
     if (!(coordinates_lat && coordinates_lng && adventure_type)) {
@@ -135,7 +135,8 @@ const getAdventuresByDistance = async (req, res) => {
       await serviceHandler.adventureService.getClosestAdventures({
         adventureType: adventure_type,
         coordinates,
-        count: Number(count)
+        count: Number(count),
+        zoneId: zone_id ?? 0
       })
 
     return sendResponse({ req, res, data: { adventures }, status: SUCCESS })
