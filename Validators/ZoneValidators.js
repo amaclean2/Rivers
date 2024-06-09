@@ -66,8 +66,6 @@ const zoneEditValidator = () => {
         editZoneId: value.zone_id
       }
 
-      if (value.editField === 'public') value.editValue = +value.editValue
-
       return value
     })
   ]

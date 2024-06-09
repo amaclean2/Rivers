@@ -93,8 +93,6 @@ const adventureEditValidator = () => {
           field.value = parseFloat(field.value)
         }
 
-        if (field.name === 'public') field.value = +field.value
-
         return field
       }),
     body('fields')
@@ -144,8 +142,7 @@ const adventureEditValidator = () => {
         return fields.map((field) => {
           const newField = { ...field }
 
-          if (field.name === 'public') newField.value = +field.value
-          else if (numFields.includes(field.name)) {
+          if (numFields.includes(field.name)) {
             newField.value = parseFloat(field.value)
           }
 
