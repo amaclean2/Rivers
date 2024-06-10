@@ -15,8 +15,6 @@ const {
   resetPassword,
   savePasswordReset,
   editUser,
-  searchAmongFriends,
-  searchAmongUsers,
   emailOptOut
 } = require('../../Handlers/Users')
 const { Router } = require('express')
@@ -25,8 +23,6 @@ const router = Router()
 
 router.get('/id', getUserById)
 router.get('/loggedIn', getLoggedInUser)
-router.get('/search', searchAmongUsers)
-router.get('/friendSearch', searchAmongFriends)
 router.get('/follow', followUser)
 router.get('/emailOptOut', emailOptOut)
 

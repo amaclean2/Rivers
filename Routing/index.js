@@ -5,6 +5,8 @@ const adventuresRouter = require('./Adventures')
 const picturesRouter = require('./Pictures')
 const servicesRouter = require('./Services')
 const conversationsRouter = require('./Messages')
+const searchRouter = require('./Services/Search')
+const zonesRouter = require('./Adventures/Zones')
 const { requestLogger } = require('../Config/loggerMiddleware')
 const { sendResponse, NOT_FOUND } = require('../ResponseHandling')
 
@@ -17,6 +19,9 @@ router.use('/adventures', adventuresRouter)
 router.use('/pictures', picturesRouter)
 router.use('/services', servicesRouter)
 router.use('/conversations', conversationsRouter)
+router.use('/zones', zonesRouter)
+router.use('/search', searchRouter)
+
 router.use('/', (req, res) => {
   return sendResponse({
     req,

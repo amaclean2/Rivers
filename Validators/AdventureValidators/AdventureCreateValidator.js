@@ -41,16 +41,12 @@ const requireAdventureNearestCity = body('nearest_city').custom((value) => {
   return true
 })
 
-const requireAdventurePublic = body('public')
-  .custom((value) => {
-    if (value === undefined) throw 'public property is required'
-    if (typeof value !== 'boolean') throw 'public property must be a boolean'
+const requireAdventurePublic = body('public').custom((value) => {
+  if (value === undefined) throw 'public property is required'
+  if (typeof value !== 'boolean') throw 'public property must be a boolean'
 
-    return true
-  })
-  .customSanitizer((value) => {
-    return !!value === true ? 1 : 0
-  })
+  return true
+})
 
 const requireAdventureCreatorId = body('id_from_token')
   .custom((value) => {
@@ -145,5 +141,10 @@ const adventureCreateValidator = () => {
 }
 
 module.exports = {
-  adventureCreateValidator
+  adventureCreateValidator,
+  adventureTypes,
+  requireAdventureType,
+  requireAdventureCoordinates,
+  requireAdventurePublic,
+  requireAdventureNearestCity
 }

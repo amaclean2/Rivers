@@ -1,5 +1,6 @@
 const { body } = require('express-validator')
 const { isDefined, numFields } = require('../utils')
+const logger = require('@amaclean2/sundaypeak-water/Config/logger')
 
 const adventureEditValidator = () => {
   return [
@@ -69,6 +70,7 @@ const adventureEditValidator = () => {
         }
 
         if (field.name === 'coordinates') {
+          logger.info('coordinates parsing')
           req.body.fields = [
             {
               name: 'coordinates_lng',
@@ -90,8 +92,6 @@ const adventureEditValidator = () => {
         } else if (numFields.includes(field.name)) {
           field.value = parseFloat(field.value)
         }
-
-        if (field.name === 'public') field.value = +field.value
 
         return field
       }),
@@ -142,8 +142,7 @@ const adventureEditValidator = () => {
         return fields.map((field) => {
           const newField = { ...field }
 
-          if (field.name === 'public') newField.value = +field.value
-          else if (numFields.includes(field.name)) {
+          if (numFields.includes(field.name)) {
             newField.value = parseFloat(field.value)
           }
 
