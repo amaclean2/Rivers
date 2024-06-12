@@ -147,7 +147,7 @@ completed_adventure: {
 **Description:**
 
 `creator_id` the id of the adventure creator  
-`adventure_name` the name of the adventuren 
+`adventure_name` the name of the adventuren  
 `adventure_type` type [AdventureType](#adventuretype)  
 `nearest_city` a string denoting city and state  
 `adventure_id` the id of the adventure  
