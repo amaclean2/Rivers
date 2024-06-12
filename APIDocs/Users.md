@@ -146,12 +146,12 @@ completed_adventure: {
 
 **Description:**
 
-`creator_id` the id of the adventure creator
-`adventure_name` the name of the adventure
-`adventure_type` type [AdventureType](#adventuretype)
-`nearest_city` a string denoting city and state
-`adventure_id` the id of the adventure
-`user_id` the user who completed the adventure
+`creator_id` the id of the adventure creator  
+`adventure_name` the name of the adventuren 
+`adventure_type` type [AdventureType](#adventuretype)  
+`nearest_city` a string denoting city and state  
+`adventure_id` the id of the adventure  
+`user_id` the user who completed the adventure  
 
 ### Todo Adventure
 
@@ -168,10 +168,10 @@ todo_adventure: {
 
 **Description:**
 
-`adventure_name` the name of the adventure
-`adventure_type` type [AdventureType](#adventuretype)
-`nearest_city` a string denoting city and state
-`adventure_id` the id of the adventure
+`adventure_name` the name of the adventure  
+`adventure_type` type [AdventureType](#adventuretype)  
+`nearest_city` a string denoting city and state  
+`adventure_id` the id of the adventure  
 
 ### Request Body
 
