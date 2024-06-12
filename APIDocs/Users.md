@@ -22,7 +22,7 @@ HTTP Method: POST
 {
     email: String,
     password: String,
-    native: false
+    native: Boolean
 }
 ```
 
