@@ -27,9 +27,9 @@ HTTP Method: POST
 ```
 
 **Description:**
-email: a string formatted with an `@` separating an indentifier and a domain
-password: a plaintext string *Note: This request is secured with a TLS certificate so any data passed over `https` will be encrypted*
-native: a boolean telling the backend whether this login is happening on a native app or a webapp
+email: a string formatted with an `@` separating an indentifier and a domain  
+password: a plaintext string *Note: This request is secured with a TLS certificate so any data passed over `https` will be encrypted*  
+native: a boolean telling the backend whether this login is happening on a native app or a webapp 
 
 **Response:**
 ```javascript
@@ -43,8 +43,8 @@ native: a boolean telling the backend whether this login is happening on a nativ
 }
 ```
 
-The `user` object is [described below](#user)
-`token` is a jwt used to identify the session as unique
+The `user` object is [described below](#user)  
+`token` is a jwt used to identify the session as unique  
 
 **Error Response:**
 ```javascript
@@ -60,11 +60,11 @@ The `user` object is [described below](#user)
 ```
 
 **Description:**
-`message` is the text sent back describing what went wrong
-`handled` describes whether the error was described and caught before the final return or not
-`request_body` as [described below](#request-body)
-`code_error` gives the iternal description of the error if it was handled. Can give more context to the error
-`status_code` is the code of the returned error
+`message` is the text sent back describing what went wrong  
+`handled` describes whether the error was described and caught before the final return or not  
+`request_body` as [described below](#request-body)  
+`code_error` gives the iternal description of the error if it was handled. Can give more context to the error  
+`status_code` is the code of the returned error  
 
 
 ## Object Breakdowns
@@ -94,10 +94,10 @@ user: {
 
 **Description:**
 
-The friend object as [described below](#friend)
-The completed adventures object as [described below](#completed-adventure)
-The todo adventures object as [described below](#todo-adventure)
-Images is an array of image urls
+The friend object as [described below](#friend)  
+The completed adventures object as [described below](#completed-adventure)  
+The todo adventures object as [described below](#todo-adventure)  
+Images is an array of image urls  
 
 ### AdventureType
 
@@ -122,12 +122,12 @@ friend: {
 
 **Description:**
 
-user_id: references the id of the user
-display_name: is a concatenated version of the users first and last names
-first_name: the users first name
-profile_picture_url: a web link to an image
-email: an email string
-email_opt_out: a boolean referencing whether the user has opted out of emails or not
+`user_id` references the id of the user  
+`display_name` is a concatenated version of the users first and last names  
+`first_name` the users first name  
+`profile_picture_url` a web link to an image  
+`email` an email string  
+`email_opt_out` a boolean referencing whether the user has opted out of emails or not  
 
 ### Completed Adventure
 
@@ -146,12 +146,12 @@ completed_adventure: {
 
 **Description:**
 
-creator_id: the id of the adventure creator
-adventure_name: the name of the adventure
-adventure_type: type [AdventureType](#adventuretype)
-nearest_city: a string denoting city and state
-adventure_id: the id of the adventure
-user_id: the user who completed the adventure
+`creator_id` the id of the adventure creator
+`adventure_name` the name of the adventure
+`adventure_type` type [AdventureType](#adventuretype)
+`nearest_city` a string denoting city and state
+`adventure_id` the id of the adventure
+`user_id` the user who completed the adventure
 
 ### Todo Adventure
 
@@ -168,10 +168,10 @@ todo_adventure: {
 
 **Description:**
 
-adventure_name: the name of the adventure
-adventure_type: type [AdventureType](#adventuretype)
-nearest_city: a string denoting city and state
-adventure_id: the id of the adventure
+`adventure_name` the name of the adventure
+`adventure_type` type [AdventureType](#adventuretype)
+`nearest_city` a string denoting city and state
+`adventure_id` the id of the adventure
 
 ### Request Body
 
