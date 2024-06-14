@@ -97,13 +97,7 @@ user: {
 The friend object as [described below](#friend)  
 The completed adventures object as [described below](#completed-adventure)  
 The todo adventures object as [described below](#todo-adventure)  
-Images is an array of image urls  
-
-### AdventureType
-
-```javascript
-enum('ski' | 'climb' | 'hike' | 'bike' | 'skiApproach')
-```
+Images is an array of image urls
 
 ### Friend
 
