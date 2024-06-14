@@ -17,7 +17,7 @@ Content-Type: application/json
 HTTP Method: GET
 ```
 
-The `<adventure_type>` variable is one of `enum` [Adventure Type](#adventuretype) below.
+The `<adventure_type>` variable is one of `enum` [Adventure Type](#adventuretype) below.  
 
 **Response:**
 ```javascript
@@ -35,7 +35,7 @@ The `<adventure_type>` variable is one of `enum` [Adventure Type](#adventuretype
 }
 ```
 
-**Description:**
+**Description:**  
 `lines:` are all the features in the adventures collection who's geo data consists of a path  
 `points:` are all the features who's geo data are just a coordinate pair  
 
@@ -50,7 +50,7 @@ The `<adventure_type>` variable is one of `enum` [Adventure Type](#adventuretype
 ```
 
 **Description:**
-Each feature in a GeoJSON object is a [GeoJSON Feature](#geojson-feature)
+Each feature in a GeoJSON object is a [GeoJSON Feature](#geojson-feature)  
 
 ### GeoJSON Feature
 ```javascript
@@ -70,9 +70,9 @@ Each feature in a GeoJSON object is a [GeoJSON Feature](#geojson-feature)
 ```
 
 **Description:**
-`id` is the feature id, used to call the feature individually
-`adventureName` is the name of the feature
-`color` denotes the path color on the map
+`id` is the feature id, used to call the feature individually  
+`adventureName` is the name of the feature  
+`color` denotes the path color on the map  
 
 ### AdventureType
 ```javascript
