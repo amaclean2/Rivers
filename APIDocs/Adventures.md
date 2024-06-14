@@ -19,11 +19,65 @@ HTTP Method: GET
 
 The `<adventure_type>` variable is one of `enum` [Adventure Type](#adventuretype) below.
 
+**Response:**
+```javascript
+{
+  data: {
+    adventures: {
+      <adventure_type>: {
+        lines: GeoJSON-Object
+        points: GeoJSON-Object
+      }
+    }
+  },
+  statusCode: Number
+  timestamp: Number
+}
+```
+
+**Description:**
+`lines:` are all the features in the adventures collection who's geo data consists of a path  
+`points:` are all the features who's geo data are just a coordinate pair  
 
 ## Object Breakdowns
 
-### AdventureType
+### GeoJSON Object
+```javascript
+{
+  type: 'FeatureCollection,
+  features: GeoJSONFeature[]
+}
+```
 
+**Description:**
+Each feature in a GeoJSON object is a [GeoJSON Feature](#geojson-feature)
+
+### GeoJSON Feature
+```javascript
+{
+  type: 'Feature,
+  geometry: {
+    type: 'Point' | 'LineString'
+    coordinates: [lng, lat] | [lng, lat][]
+  },
+  id: Number
+  properties: {
+    adventureType: adventureType
+    adventureName: String
+    color: String
+  }
+}
+```
+
+**Description:**
+`id` is the feature id, used to call the feature individually
+`adventureName` is the name of the feature
+`color` denotes the path color on the map
+
+### AdventureType
 ```javascript
 enum('ski' | 'climb' | 'hike' | 'bike' | 'skiApproach')
 ```
+
+**Description:**
+The available adventure types to choose from
