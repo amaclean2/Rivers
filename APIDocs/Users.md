@@ -142,7 +142,7 @@ completed_adventure: {
 
 `creator_id` the id of the adventure creator  
 `adventure_name` the name of the adventuren  
-`adventure_type` type [AdventureType](#adventuretype)  
+`adventure_type` type [AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)  
 `nearest_city` a string denoting city and state  
 `adventure_id` the id of the adventure  
 `user_id` the user who completed the adventure  
@@ -163,7 +163,7 @@ todo_adventure: {
 **Description:**
 
 `adventure_name` the name of the adventure  
-`adventure_type` type [AdventureType](#adventuretype)  
+`adventure_type` type [AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)  
 `nearest_city` a string denoting city and state  
 `adventure_id` the id of the adventure  
 
