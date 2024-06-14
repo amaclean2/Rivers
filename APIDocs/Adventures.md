@@ -49,7 +49,7 @@ The `<adventure_type>` variable is one of `enum` [Adventure Type](#adventuretype
 }
 ```
 
-**Description:**
+**Description:**  
 Each feature in a GeoJSON object is a [GeoJSON Feature](#geojson-feature)  
 
 ### GeoJSON Feature
@@ -69,7 +69,7 @@ Each feature in a GeoJSON object is a [GeoJSON Feature](#geojson-feature)
 }
 ```
 
-**Description:**
+**Description:**  
 `id` is the feature id, used to call the feature individually  
 `adventureName` is the name of the feature  
 `color` denotes the path color on the map  
@@ -79,5 +79,5 @@ Each feature in a GeoJSON object is a [GeoJSON Feature](#geojson-feature)
 enum('ski' | 'climb' | 'hike' | 'bike' | 'skiApproach')
 ```
 
-**Description:**
+**Description:**  
 The available adventure types to choose from
