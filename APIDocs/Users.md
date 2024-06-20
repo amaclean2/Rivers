@@ -26,10 +26,12 @@ HTTP Method: POST
 }
 ```
 
-**Description:**
-email: a string formatted with an `@` separating an indentifier and a domain  
-password: a plaintext string *Note: This request is secured with a TLS certificate so any data passed over `https` will be encrypted*  
-native: a boolean telling the backend whether this login is happening on a native app or a webapp 
+**Description:**  
+| Key | Type | Description |
+|--|--|--|
+|`email`|String|formatted with an `@` separating an indentifier and a domain|
+|`password`|String|*Note: This request is secured with a TLS certificate so any data passed over `https` will be encrypted*|
+|`native`|Boolean|telling the backend whether this login is happening on a native app or a webapp|
 
 **Response:**
 ```javascript
