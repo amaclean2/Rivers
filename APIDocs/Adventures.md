@@ -30,8 +30,8 @@ The `<adventure_type>` variable is one of `enum` [Adventure Type](#adventuretype
       }
     }
   },
-  statusCode: Number
-  timestamp: Number
+  statusCode: Int
+  timestamp: Int
 }
 ```
 
@@ -81,3 +81,14 @@ enum('ski' | 'climb' | 'hike' | 'bike' | 'skiApproach')
 
 **Description:**  
 The available adventure types to choose from
+
+### Coordinates Object
+```javascript
+{
+  lat: Double,
+  lng: Double
+}
+```
+
+**Description:**
+The latitude and longitude of a point. Any coordinates will be formated like this unless in a GeoJSON object.
