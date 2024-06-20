@@ -151,7 +151,7 @@ completed_adventure: {
 
 |Key|Type|Description|
 |--|--|--|
-|`creator_id`|Int|id of the adventure creator|
+|`creator_id`|Int|id of the adventure creator. *TODO: remove this to match up with the [Todo Adventure](#todo-adventure) field|
 |`adventure_name`|String| |
 |`adventure_type`|[AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)| |
 |`nearest_city`|String|Formatted as "city, state"|
@@ -171,12 +171,12 @@ todo_adventure: {
 }
 ```
 
-**Description:**
-
-`adventure_name` the name of the adventure  
-`adventure_type` type [AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)  
-`nearest_city` a string denoting city and state  
-`adventure_id` the id of the adventure  
+|Key|Type|Description|
+|--|--|--|
+|`adventure_name`|String| |
+|`adventure_type`|[AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)| |
+|`nearest_city`|String|Formatted as "city, state"|
+|`adventure_id`|Int| |
 
 ### Request Body
 
