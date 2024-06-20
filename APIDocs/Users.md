@@ -149,14 +149,14 @@ completed_adventure: {
 }
 ```
 
-**Description:**
-
-`creator_id` the id of the adventure creator  
-`adventure_name` the name of the adventuren  
-`adventure_type` type [AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)  
-`nearest_city` a string denoting city and state  
-`adventure_id` the id of the adventure  
-`user_id` the user who completed the adventure  
+|Key|Type|Description|
+|--|--|--|
+|`creator_id`|Int|id of the adventure creator|
+|`adventure_name`|String| |
+|`adventure_type`|[AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)| |
+|`nearest_city`|String|Formatted as "city, state"|
+|`adventure_id`|Int| |
+|`user_id`|Int|User who completed the adventure *TODO: remove this as it's redundant*|
 
 ### Todo Adventure
 
