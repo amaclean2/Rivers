@@ -93,7 +93,6 @@ user: {
 }
 ```
 
-**Description:**
 |Key|Type|Description|
 |--|--|--|
 |`first_name`|String| |
@@ -126,14 +125,14 @@ friend: {
 }
 ```
 
-**Description:**
-
-`user_id` references the id of the user  
-`display_name` is a concatenated version of the users first and last names  
-`first_name` the users first name  
-`profile_picture_url` a web link to an image  
-`email` an email string  
-`email_opt_out` a boolean referencing whether the user has opted out of emails or not  
+|Key|Type|Description|
+|--|--|--|
+|`user_id`|Int|Referencing the id of the friend user|
+|`display_name`|String|A user's first and last name concatenated into one string|
+|`first_name`|String|Just the user's first name for when a shorter name field is required|
+|`profile_picture_url`|String|A url string pointing to the Sunday Peak CDN|
+|`email`|String| |
+|`email_opt_out`|Boolean|Describing whether the user has opted out of marketing emails|
 
 ### Completed Adventure
 
