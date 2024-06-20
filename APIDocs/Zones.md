@@ -42,6 +42,14 @@ This API doesn't require an auth token because it is meant to be able to be used
 
 ### Get Zone Endpoint
 ```bash
+https://api.sundaypeak.com/zones/details?id=<zone_id>
+
+Content-Type: application/json
+HTTP Method: GET
+```
+
+**Response:**  
+```javascript
 {
   data: {
     zone: Zone
