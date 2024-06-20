@@ -32,5 +32,5 @@ The `adventure_type` variable is one of `enum` [Adventure Type](https://github.c
 ```
 
 **Description:**
-`GeoJSON-Object is a [mapping structure](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)
+`GeoJSON-Object is a [mapping structure](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#geojson-object)
 
