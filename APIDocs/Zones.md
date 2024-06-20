@@ -45,7 +45,9 @@ This API doesn't require an auth token because it is meant to be able to be used
 {
   data: {
     zone: Zone
-  }
+  },
+  statusCode: Int,
+  timestamp: Int
 }
 ```
 
