@@ -26,7 +26,6 @@ HTTP Method: POST
 }
 ```
 
-**Description:**  
 | Key | Type | Description |
 |--|--|--|
 |`email`|String|formatted with an `@` separating an indentifier and a domain|
@@ -95,11 +94,22 @@ user: {
 ```
 
 **Description:**
-
-The friend object as [described below](#friend)  
-The completed adventures object as [described below](#completed-adventure)  
-The todo adventures object as [described below](#todo-adventure)  
-Images is an array of image urls
+|Key|Type|Description|
+|--|--|--|
+|first_name|String| |
+|last_name|String| |
+|email|String| |
+|bio|String| |
+|city|String| |
+|id|Int| |
+|phone|String| |
+|user_site|String| |
+|profile_picture_url|String|A url string pointing to the Sunday Peak CDN|
+|email_opt_out|Boolean| |
+|friends|[Friend](#friend)[]| |
+|images|String[]| |
+|completed_adventures|[Completed Adventure](#completed-adventure)[]| |
+|todo_adventures|[Todo Adventure](#todo-adventure)[]| |
 
 ### Friend
 
