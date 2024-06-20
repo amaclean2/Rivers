@@ -96,20 +96,20 @@ user: {
 **Description:**
 |Key|Type|Description|
 |--|--|--|
-|first_name|String| |
-|last_name|String| |
-|email|String| |
-|bio|String| |
-|city|String| |
-|id|Int| |
-|phone|String| |
-|user_site|String| |
-|profile_picture_url|String|A url string pointing to the Sunday Peak CDN|
-|email_opt_out|Boolean| |
-|friends|[Friend](#friend)[]| |
-|images|String[]| |
-|completed_adventures|[Completed Adventure](#completed-adventure)[]| |
-|todo_adventures|[Todo Adventure](#todo-adventure)[]| |
+|`first_name`|String| |
+|`last_name`|String| |
+|email`|String| |
+|`bio`|String| |
+|`city`|String| |
+|`id`|Int| |
+|`phone`|String| |
+|`user_site`|String| |
+|`profile_picture_url`|String|A url string pointing to the Sunday Peak CDN|
+|`email_opt_out`|Boolean| |
+|`friends`|[Friend](#friend)[]| |
+|`images`|String[]| |
+|`completed_adventures`|[Completed Adventure](#completed-adventure)[]| |
+|`todo_adventures`|[Todo Adventure](#todo-adventure)[]| |
 
 ### Friend
 
