@@ -105,7 +105,7 @@ user: {
 |`phone`|String| |
 |`user_site`|String|A url string depecting any website the user wishes to post in conjunction with their profile |
 |`profile_picture_url`|String|A url string pointing to the Sunday Peak CDN|
-|`email_opt_out`|Boolean| |
+|`email_opt_out`|Boolean|Describing whether the user has opted out of marketing emails|
 |`friends`|[Friend](#friend)[]| |
 |`images`|String[]| |
 |`completed_adventures`|[Completed Adventure](#completed-adventure)[]| |
