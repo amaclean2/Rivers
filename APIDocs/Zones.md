@@ -118,7 +118,7 @@ HTTP Method: GET
 |`adventure_id`|Int|Coorelates to the id of the adventure| 
 |`public`|Boolean|A boolean describing if the adventure is public or private|
 |`path`|[GeoJSONCoordinate](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#geojson-coordinates-object)[]| |
-|`coordinates`|[coordinates](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#coordinates-object)| |
+|`coordinates`|[Coordinates](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#coordinates-object)| |
 
 ### Sub-zone Object
 ```javascript
@@ -136,7 +136,7 @@ HTTP Method: GET
 |`adventure_type`|[AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)|Zone adventure type|
 |`zone_id`|Int|Coorelates to the id of the zone| 
 |`public`|Boolean|A boolean describing if the zone is public or private|
-|`coordinates`|[coordinates](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#coordinates-object)| |
+|`coordinates`|[Coordinates](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#coordinates-object)| |
 
 ### Breadcrumb Object
 ```javascript
