@@ -112,12 +112,13 @@ HTTP Method: GET
 }
 ```
 
-**Description:**  
-`adventure_type`: Enum [AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)  
-`adventure_id`: Coorelates to the id of the adventure  
-`public`: Right now this is a int value denoting true or false in the SQL table. *TODO: Convert this to a boolean value*  
-`path`: An array of [GeoJSON Coordinates](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#geojson-coordinates-object)  
-`coordinates`: An individual pair of [coordinates](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#coordinates-object)  
+|Key|Type|Description|
+|--|--|--|
+|`adventure_type`|[AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)|Zone adventure type|
+|`adventure_id`|Int|Coorelates to the id of the adventure| 
+|`public`|Boolean|A boolean describing if the adventure is public or private|
+|`path`|[GeoJSONCoordinate](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#geojson-coordinates-object)[]| |
+|`coordinates`|[coordinates](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#coordinates-object)| |
 
 ### Sub-zone Object
 ```javascript
@@ -130,12 +131,12 @@ HTTP Method: GET
 }
 ```
 
-**Description:**  
-`adventure_type`: Enum [AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)  
-`zone_id`: Coorelates to the id of the zone  
-`public`: Right now this is a int value denoting true or false in the SQL table. *TODO: Convert this to a boolean value*  
-`coordinates`: An individual pair of [coordinates](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#coordinates-object)  
-*TODO: Remove `zone_child_id` from this object.*  
+|Key|Type|Description|
+|--|--|--|
+|`adventure_type`|[AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)|Zone adventure type|
+|`zone_id`|Int|Coorelates to the id of the zone| 
+|`public`|Boolean|A boolean describing if the zone is public or private|
+|`coordinates`|[coordinates](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#coordinates-object)| |
 
 ### Breadcrumb Object
 ```javascript
@@ -147,11 +148,12 @@ HTTP Method: GET
 }
 ```
 
-**Description:**  
-`adventure_type`: Enum [AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)  
-`id`: Coorelates to the id of the zone or adventure 
-`name`: The name of the zone or adventure  
-`category_type`: An enum of type [CategoryType](#category-type) that describes an adventure or zone
+|Key|Type|Description|
+|--|--|--|
+|`adventure_type`|[AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)|Zone adventure type|
+|`id`|Int|Coorelates to the id of the zone or adventure| 
+|`name`|Boolean|The name of the zone or adventure|
+|`category_type`|[CategoryType](#category-type)|Describes an adventure or zone|
 
 ### Category Type
 ```javascript
