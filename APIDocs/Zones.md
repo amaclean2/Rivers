@@ -96,7 +96,7 @@ HTTP Method: GET
 |`coordinates`|[CoordinatesObject](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#coordinates-object)| |  
 |`public`|Boolean|A boolean describing if the zone is public or private|
 |`adventures`|[AdventureObject](#sub-adventure-object)[]|Describing each sub adventure|
-|`zones`|[AoneObject](#sub-zone-object)[]|describing each sub zone|
+|`zones`|[ZoneObject](#sub-zone-object)[]|describing each sub zone|
 |`breadcrumb`|[BreadcrumbObject](#breadcrumb-object)[]| |
 |`images`|String[]|An array of image urls|
 
