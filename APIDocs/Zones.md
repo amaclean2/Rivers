@@ -95,9 +95,9 @@ HTTP Method: GET
 |`creator_picture_url`|String|A url string of the user that created this adventure|
 |`coordinates`|[CoordinatesObject](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#coordinates-object)| |  
 |`public`|Boolean|A boolean describing if the zone is public or private|
-|`adventures`|[adventureObject](#sub-adventure-object)[]|Describing each sub adventure|
-|`zones`|[zoneObject](#sub-zone-object)[]|describing each sub zone|
-|`breadcrumb`|[breadcrumbObject](#breadcrumb-object)[]| |
+|`adventures`|[AdventureObject](#sub-adventure-object)[]|Describing each sub adventure|
+|`zones`|[AoneObject](#sub-zone-object)[]|describing each sub zone|
+|`breadcrumb`|[BreadcrumbObject](#breadcrumb-object)[]| |
 |`images`|String[]|An array of image urls|
 
 ### Sub-adventure Object
