@@ -60,7 +60,7 @@ Each feature in a GeoJSON object is a [GeoJSON Feature](#geojson-feature)
     type: 'Point' | 'LineString'
     coordinates: [lng, lat] | [lng, lat][]
   },
-  id: Number
+  id: Int
   properties: {
     adventureType: adventureType
     adventureName: String
