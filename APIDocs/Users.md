@@ -39,7 +39,7 @@ HTTP Method: POST
         user: User,
         token: String
     },
-    statusCode: Number,
+    status_code: Number,
     timestamp: Number
 }
 ```
@@ -97,7 +97,7 @@ user: {
 |--|--|--|
 |`first_name`|String| |
 |`last_name`|String| |
-|email`|String| |
+|`email`|String| |
 |`bio`|String| |
 |`city`|String| |
 |`id`|Int| |
@@ -140,23 +140,19 @@ The completed adventure is a modified subset of the Adventure object.
 
 ```javascript
 completed_adventure: {
-    creator_id: Number
     adventure_name: String
     adventure_type: String
     nearest_city: String
     adventure_id: Number
-    user_id: Number
 }
 ```
 
 |Key|Type|Description|
 |--|--|--|
-|`creator_id`|Int|id of the adventure creator. *TODO: remove this to match up with the [Todo Adventure](#todo-adventure) field|
 |`adventure_name`|String| |
 |`adventure_type`|[AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)| |
 |`nearest_city`|String|Formatted as "city, state"|
 |`adventure_id`|Int| |
-|`user_id`|Int|User who completed the adventure *TODO: remove this as it's redundant*|
 
 ### Todo Adventure
 
