@@ -90,13 +90,13 @@ The available adventure types to choose from
 }
 ```
 
+**Description:**  
+The longitude, and latitude arranged in an array. Used for GeoJSON structures.
+
 ### GeoJSON Coordinates Object
 ```javascript
 [lng, lat]
 ```
 
-**Description:**
-The longitude, and latitude arranged in an array. Used for GeoJSON structures.
-
-**Description:**
+**Description:**  
 The latitude and longitude of a point. Any coordinates will be formated like this unless in a GeoJSON object.
