@@ -70,11 +70,11 @@ HTTP Method: GET
   bio: String,
   approach: String,
   nearest_city: String,
-  date_created: DateTime,
+  date_created: Int,
   creator_id: Int,
   creator_name: String,
   creator_email: String,
-  profile_picture_url: String,
+  creator_picture_url: String,
   coordinates: CoordinatesObject,
   public: Boolean,
   adventures: SubAdventure[],
@@ -84,20 +84,21 @@ HTTP Method: GET
 }
 ```
 
-**Description:**  
-`adventure_type`: Zone adventure type. Follows the format [AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)
-`approach`: A description of the approach path to the given zone  
-`date_created`: Formatted as an SQL string giving the time and date this zone was created. *TODO: change this to a JS timestamp*  
-`creator_id`: Maps to a user id that created the adventure  
-`creator_name`: Formatted as `first_name last_name` of the user that created this adventure  
-`creator_email`: The email from the user account that created the adventure  
-`profile_picture_url`: A url string of the user that created this adventure. *TODO: give this a title describing that it's of the user and not of the adventure.*  
-`coordinates`: [Coordinates object](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#coordinates-object) of the zone  
-`public`: A boolean describing if the zone is public or private  
-`adventures`: An array of [adventure objects](#sub-adventure-object) describing each sub adventure  
-`zones`: An array of [zone objects](#sub-zone-object) describing each sub zone  
-`breadcrumb`: An array of [breadcrumb objects](#breadcrumb-object)  
-`images`: An array of image urls  
+|Key|Type|Description|
+|--|--|--|
+|`adventure_type`|[AdventureType](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#adventuretype)|Zone adventure type|
+|`approach`|String|A description of the approach path to the given zone|  
+|`date_created`|Int|An js timestamp denoting when the zone was created|    
+|`creator_id`|Int|Maps to a user id that created the adventure|
+|`creator_name`|String|Formatted as `first_name last_name` of the user that created this adventure|
+|`creator_email`|String|The email from the user account that created the adventure|
+|`creator_picture_url`|String|A url string of the user that created this adventure|
+|`coordinates`|[CoordinatesObject](https://github.com/amaclean2/Rivers/blob/main/APIDocs/Adventures.md#coordinates-object)| |  
+|`public`|Boolean|A boolean describing if the zone is public or private|
+|`adventures`|[adventureObject](#sub-adventure-object)[]|Describing each sub adventure|
+|`zones`|[zoneObject](#sub-zone-object)[]|describing each sub zone|
+|`breadcrumb`|[breadcrumbObject](#breadcrumb-object)[]| |
+|`images`|String[]|An array of image urls|
 
 ### Sub-adventure Object
 ```javascript
