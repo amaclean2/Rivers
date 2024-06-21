@@ -4,7 +4,7 @@ const sendResponse = ({ req, res, data, status }) => {
 
   return res.status(status).json({
     data,
-    statusCode: status,
+    status_code: status,
     timestamp: Date.now()
   })
 }

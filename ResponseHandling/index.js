@@ -49,7 +49,7 @@ const returnError = ({
 
   res.status(messageCode ? messageCode : SERVER_ERROR).json({
     error: errorBody,
-    statusCode: returnStatus
+    status_code: returnStatus
   })
 
   return errorBody
