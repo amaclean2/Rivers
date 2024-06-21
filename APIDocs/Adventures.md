@@ -30,7 +30,7 @@ The `<adventure_type>` variable is one of `enum` [Adventure Type](#adventuretype
       }
     }
   },
-  statusCode: Int
+  status_code: Int
   timestamp: Int
 }
 ```
