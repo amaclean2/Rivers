@@ -39,20 +39,20 @@ const getAllZones = async (req, res) => {
 
 const getZonesByDistance = async (req, res) => {
   try {
-    const adventureType = req.query?.adventure_type
+    const adventureType = req.query?.type
     const coordinates = {
-      lat: req.query?.coordinates_lat,
-      lng: req.query?.coordinates_lng
+      lat: Number(req.query?.lat),
+      lng: Number(req.query?.lng)
     }
     const count = req.query?.count ?? 10
-    const parentZoneId = req.query?.parent ?? null
+    const parentZoneId = req.query?.zone_id ?? null
 
     if (!adventureType) {
       throw returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
-        message: 'adventure_type query parameter is required'
+        message: 'type query parameter is required'
       })
     }
 
@@ -61,8 +61,7 @@ const getZonesByDistance = async (req, res) => {
         req,
         res,
         status: NOT_ACCEPTABLE,
-        message:
-          'coordinates_lat and coordinates_lng query parameters are required'
+        message: 'lat and lng query parameters are required'
       })
     }
 

@@ -33,7 +33,7 @@ const handleUserSearch = async (req, res) => {
     return sendResponse({
       req,
       res,
-      data: { searchResults: results },
+      data: { search_results: results },
       status: SUCCESS
     })
   } catch (error) {
@@ -63,7 +63,7 @@ const handleAdventureSearch = async (req, res) => {
     return sendResponse({
       req,
       res,
-      data: { searchResults: results },
+      data: { search_results: results },
       status: SUCCESS
     })
   } catch (error) {
@@ -93,7 +93,7 @@ const handleZoneSearch = async (req, res) => {
     return sendResponse({
       req,
       res,
-      data: { searchResults: results },
+      data: { search_results: results },
       status: SUCCESS
     })
   } catch (error) {

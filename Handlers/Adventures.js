@@ -115,27 +115,33 @@ const getAllAdventures = async (req, res) => {
 
 const getAdventuresByDistance = async (req, res) => {
   try {
-    const { coordinates_lat, coordinates_lng, adventure_type, count, zone_id } =
-      req.query
+    const { lat, lng, type, count, zone_id } = req.query
 
-    if (!(coordinates_lat && coordinates_lng && adventure_type)) {
-      throw 'coordinates_lat, coordinates_lng and adventure_type are required in the query parameters. count is optional'
+    // zone_id specifies if the response is to include all adventues closest to the lat and lng
+    // or only adventures that are not children of the zone
+
+    const coordinatesLat = lat,
+      coordinatesLng = lng,
+      adventureType = type
+
+    if (!(coordinatesLat && coordinatesLng && adventureType)) {
+      throw 'lat, lng and type fields are required in the query parameters. count is optional'
     }
 
     const coordinates = {
-      lat: Number(coordinates_lat),
-      lng: Number(coordinates_lng)
+      lat: Number(coordinatesLat),
+      lng: Number(coordinatesLng)
     }
 
     req.logger.info(
-      `getting adventures relative to coordinates {lat: ${coordinates.lat}, lng: ${coordinates.lng}} for adventure type: ${adventure_type}`
+      `getting adventures relative to coordinates {lat: ${coordinates.lat}, lng: ${coordinates.lng}} for adventure type: ${adventureType}`
     )
 
     const adventures =
       await serviceHandler.adventureService.getClosestAdventures({
-        adventureType: adventure_type,
+        adventureType,
         coordinates,
-        count: Number(count),
+        count: count ? Number(count) : 10,
         zoneId: zone_id ?? 0
       })
 
