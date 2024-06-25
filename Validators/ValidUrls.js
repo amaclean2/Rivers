@@ -22,7 +22,6 @@ module.exports = [
   'POST:/users/newPassword',
   'GET:/images',
   // search
-  'GET:/search/users',
   'GET:/search/adventures',
   'GET:/search/zones'
 ]

@@ -11,8 +11,8 @@ const logger = require('../Config/logger')
 const handleUserSearch = async (req, res) => {
   try {
     const searchText = req.query?.q
-    const userId = req.query?.id
     const amongFriends = req.query?.friends
+    const userId = req.body?.id_from_token
 
     if (!searchText) {
       throw returnError({
@@ -20,15 +20,6 @@ const handleUserSearch = async (req, res) => {
         res,
         status: NOT_ACCEPTABLE,
         message: '`q` parameter must be present in a search query'
-      })
-    }
-
-    if (!userId) {
-      throw returnError({
-        req,
-        res,
-        status: NOT_ACCEPTABLE,
-        message: '`id` parameter must be present in a search query'
       })
     }
 
