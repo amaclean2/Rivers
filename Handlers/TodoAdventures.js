@@ -1,12 +1,23 @@
 const { validationResult } = require('express-validator')
 const serviceHandler = require('../Config/services')
-const { returnError, sendResponse, CREATED } = require('../ResponseHandling')
+const {
+  returnError,
+  sendResponse,
+  CREATED,
+  NOT_ACCEPTABLE,
+  SERVER_ERROR
+} = require('../ResponseHandling')
 
 const createTodo = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      return returnError({ req, res, error: errors.array()[0] })
+      return returnError({
+        req,
+        res,
+        error: errors.array()[0],
+        status: NOT_ACCEPTABLE
+      })
     }
 
     const { user_id, adventure_id, public: publicField } = req.body
@@ -32,7 +43,13 @@ const createTodo = async (req, res) => {
       status: CREATED
     })
   } catch (error) {
-    throw returnError({ req, res, message: 'serverCreateTick', error })
+    return returnError({
+      req,
+      res,
+      message: 'serverCreateTick',
+      error,
+      status: SERVER_ERROR
+    })
   }
 }
 

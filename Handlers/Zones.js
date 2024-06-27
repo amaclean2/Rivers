@@ -6,7 +6,8 @@ const {
   NOT_ACCEPTABLE,
   sendResponse,
   SUCCESS,
-  CREATED
+  CREATED,
+  NOT_FOUND
 } = require('../ResponseHandling')
 
 const getAllZones = async (req, res) => {
@@ -14,7 +15,7 @@ const getAllZones = async (req, res) => {
     const adventureType = req.query?.type
 
     if (!adventureType) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -48,7 +49,7 @@ const getZonesByDistance = async (req, res) => {
     const parentZoneId = req.query?.zone_id ?? null
 
     if (!adventureType) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -57,7 +58,7 @@ const getZonesByDistance = async (req, res) => {
     }
 
     if (!(coordinates.lat && coordinates.lng)) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -83,7 +84,7 @@ const getZone = async (req, res) => {
     const zoneId = req.query?.zone_id
 
     if (!zoneId) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -91,6 +92,16 @@ const getZone = async (req, res) => {
       })
     }
     const zone = await serviceHandler.zoneService.getZoneData({ zoneId })
+
+    if (!zone) {
+      return returnError({
+        req,
+        res,
+        status: NOT_FOUND,
+        message: 'Zone not found'
+      })
+    }
+
     return sendResponse({ req, res, data: { zone }, status: SUCCESS })
   } catch (error) {
     return returnError({ req, res, status: SERVER_ERROR, error })
@@ -101,7 +112,7 @@ const createZone = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -135,7 +146,7 @@ const addChild = async (req, res) => {
     const childType = req.body?.child_type
 
     if (!childType || !['zone', 'adventure'].includes(childType)) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -144,7 +155,7 @@ const addChild = async (req, res) => {
     }
 
     if (!parentZoneId) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -153,7 +164,7 @@ const addChild = async (req, res) => {
     }
 
     if (!adventureId && !childZoneId) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -165,7 +176,7 @@ const addChild = async (req, res) => {
       (childType === 'zone' && !childZoneId) ||
       (childType === 'adventure' && !adventureId)
     ) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -188,7 +199,7 @@ const addChild = async (req, res) => {
           adventureId
         })
       } else {
-        throw returnError({
+        return returnError({
           req,
           res,
           status: NOT_ACCEPTABLE,
@@ -207,7 +218,7 @@ const addChild = async (req, res) => {
           childZoneId
         })
       } else {
-        throw returnError({
+        return returnError({
           req,
           res,
           status: NOT_ACCEPTABLE,
@@ -231,7 +242,7 @@ const editMetaData = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -276,7 +287,7 @@ const removeChild = async (req, res) => {
     const adventureId = req.body?.adventure_id
 
     if (!childType || !['zone', 'adventure'].includes(childType)) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -285,7 +296,7 @@ const removeChild = async (req, res) => {
     }
 
     if (!parentZoneId) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -294,7 +305,7 @@ const removeChild = async (req, res) => {
     }
 
     if (!adventureId && !childZoneId) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -332,7 +343,7 @@ const deleteZone = async (req, res) => {
     const zoneId = req.query?.zone_id
 
     if (!zoneId) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,

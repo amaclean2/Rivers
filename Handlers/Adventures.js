@@ -6,14 +6,20 @@ const {
   SUCCESS,
   NO_CONTENT,
   CREATED,
-  NOT_ACCEPTABLE
+  NOT_ACCEPTABLE,
+  SERVER_ERROR
 } = require('../ResponseHandling/statuses')
 
 const createNewAdventure = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw returnError({ req, res, error: errors.array()[0] })
+      return returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        error: errors.array()[0]
+      })
     }
 
     req.logger.info(
@@ -32,7 +38,13 @@ const createNewAdventure = async (req, res) => {
       status: CREATED
     })
   } catch (error) {
-    return returnError({ req, res, message: 'serverCreateAdventure', error })
+    return returnError({
+      req,
+      res,
+      message: 'serverCreateAdventure',
+      error,
+      status: SERVER_ERROR
+    })
   }
 }
 
@@ -67,6 +79,7 @@ const importBulkData = async (req, res) => {
       req,
       res,
       message: 'The import of your data failed. Hope something here can help',
+      status: SERVER_ERROR,
       error
     })
   }
@@ -78,13 +91,18 @@ const getAllAdventures = async (req, res) => {
     // handle the response from the validation middleware
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw returnError({ req, res, error: errors.array()[0] })
+      return returnError({
+        req,
+        res,
+        error: errors.array()[0],
+        status: NOT_ACCEPTABLE
+      })
     }
 
     const { type } = req.query
 
     if (!type) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -93,7 +111,7 @@ const getAllAdventures = async (req, res) => {
     } else if (
       !['ski', 'hike', 'bike', 'skiApproach', 'climb'].includes(type)
     ) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -109,7 +127,13 @@ const getAllAdventures = async (req, res) => {
 
     return sendResponse({ req, res, data: { adventures }, status: SUCCESS })
   } catch (error) {
-    return returnError({ req, res, error, message: 'serverGetAdventures' })
+    return returnError({
+      req,
+      res,
+      error,
+      message: 'serverGetAdventures',
+      status: SERVER_ERROR
+    })
   }
 }
 
@@ -147,7 +171,13 @@ const getAdventuresByDistance = async (req, res) => {
 
     return sendResponse({ req, res, data: { adventures }, status: SUCCESS })
   } catch (error) {
-    return returnError({ req, res, error, message: 'serverGetAdventures' })
+    return returnError({
+      req,
+      res,
+      error,
+      message: 'serverGetAdventures',
+      status: SERVER_ERROR
+    })
   }
 }
 
@@ -155,10 +185,11 @@ const getAdventureDetails = async (req, res) => {
   try {
     const { id, type } = req.query
     if (!id || !type) {
-      throw returnError({
+      return returnError({
         req,
         res,
-        message: 'adventure id and type fields are required'
+        message: 'adventure id and type fields are required',
+        status: NOT_ACCEPTABLE
       })
     }
 
@@ -178,7 +209,8 @@ const getAdventureDetails = async (req, res) => {
       req,
       res,
       message: 'serverGetAdventureDetails',
-      error
+      error,
+      status: SERVER_ERROR
     })
   }
 }
@@ -187,7 +219,7 @@ const editPath = async (req, res) => {
   try {
     const { field } = req.body
     if (!field) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -196,7 +228,7 @@ const editPath = async (req, res) => {
     }
 
     if (!field.path || !field.elevations) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -205,7 +237,7 @@ const editPath = async (req, res) => {
     }
 
     if (!field.adventure_id || !field.adventure_type) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -215,7 +247,7 @@ const editPath = async (req, res) => {
     }
 
     if (!Array.isArray(field.path || !Array.isArray(field.elevations))) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -238,7 +270,8 @@ const editPath = async (req, res) => {
       req,
       res,
       message: 'Server Error: could not edit path',
-      error
+      error,
+      status: SERVER_ERROR
     })
   }
 }
@@ -247,7 +280,12 @@ const editAdventure = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw returnError({ req, res, error: errors.array()[0] })
+      return returnError({
+        req,
+        res,
+        error: errors.array()[0],
+        status: NOT_ACCEPTABLE
+      })
     }
 
     let editResponse
@@ -275,7 +313,7 @@ const editAdventure = async (req, res) => {
         req.body
       )
     } else {
-      throw returnError({
+      return returnError({
         req,
         res,
         error: 'incorrect fields',
@@ -294,7 +332,8 @@ const editAdventure = async (req, res) => {
       req,
       res,
       message: 'Server Error: Could not edit the adventure',
-      error
+      error,
+      status: SERVER_ERROR
     })
   }
 }
@@ -319,7 +358,8 @@ const processCSV = async (req, res) => {
       req,
       res,
       message: 'could not process this data',
-      error
+      error,
+      status: SERVER_ERROR
     })
   }
 }
@@ -337,7 +377,13 @@ const deleteAdventure = async (req, res) => {
 
     return sendResponse({ req, res, data: {}, status: NO_CONTENT })
   } catch (error) {
-    return returnError({ req, res, message: 'serverDeleteAdventure', error })
+    return returnError({
+      req,
+      res,
+      message: 'serverDeleteAdventure',
+      error,
+      status: SERVER_ERROR
+    })
   }
 }
 
@@ -352,7 +398,13 @@ const deletePath = async (req, res) => {
     })
     return sendResponse({ req, res, status: NO_CONTENT })
   } catch (error) {
-    return returnError({ req, res, message: 'serverDeleteAdventure', error })
+    return returnError({
+      req,
+      res,
+      message: 'serverDeleteAdventure',
+      error,
+      status: SERVER_ERROR
+    })
   }
 }
 

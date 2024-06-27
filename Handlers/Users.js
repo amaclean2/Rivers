@@ -5,7 +5,8 @@ const {
   SUCCESS,
   ACCEPTED,
   CREATED,
-  NOT_ACCEPTABLE
+  NOT_ACCEPTABLE,
+  SERVER_ERROR
 } = require('../ResponseHandling/statuses')
 const { sendResponse } = require('../ResponseHandling/success')
 
@@ -16,7 +17,12 @@ const createUser = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw returnError({ req, res, error: errors.array()[0] })
+      return returnError({
+        req,
+        res,
+        error: errors.array()[0],
+        status: NOT_ACCEPTABLE
+      })
     }
 
     const { email, password, first_name, last_name, password_2, native } =
@@ -40,7 +46,8 @@ const createUser = async (req, res) => {
       req,
       res,
       message: typeof error === 'string' ? error : 'serverCreateUser',
-      error
+      error,
+      status: SERVER_ERROR
     })
   }
 }
@@ -49,7 +56,12 @@ const loginUser = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw returnError({ req, res, error: errors.array()[0] })
+      return returnError({
+        req,
+        res,
+        error: errors.array()[0],
+        status: NOT_ACCEPTABLE
+      })
     }
 
     const { email, password, native } = req.body
@@ -69,10 +81,17 @@ const loginUser = async (req, res) => {
       return returnError({
         req,
         res,
-        message: error
+        message: error,
+        status: SERVER_ERROR
       })
     } else {
-      return returnError({ req, res, message: 'serverLoginUser', error })
+      return returnError({
+        req,
+        res,
+        message: 'serverLoginUser',
+        error,
+        status: SERVER_ERROR
+      })
     }
   }
 }
@@ -80,7 +99,13 @@ const loginUser = async (req, res) => {
 const getUserById = async (req, res) => {
   try {
     const { id } = req.query
-    if (!id) throw returnError({ req, res, message: 'idQueryRequired' })
+    if (!id)
+      return returnError({
+        req,
+        res,
+        message: 'idQueryRequired',
+        status: NOT_ACCEPTABLE
+      })
 
     req.logger.info(`retrieving user ${id}`)
 
@@ -124,7 +149,12 @@ const resetPassword = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw returnError({ req, res, error: errors.array()[0] })
+      return returnError({
+        req,
+        res,
+        error: errors.array()[0],
+        status: NOT_ACCEPTABLE
+      })
     }
 
     req.logger.info('sending password reset token')
@@ -153,7 +183,12 @@ const savePasswordReset = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw returnError({ req, res, error: errors.array()[0] })
+      return returnError({
+        req,
+        res,
+        error: errors.array()[0],
+        status: NOT_ACCEPTABLE
+      })
     }
 
     req.logger.info('saving new password')
@@ -182,7 +217,7 @@ const followUser = async (req, res) => {
     const { leader_id } = req.query
 
     if (Number(id_from_token) === Number(leader_id)) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -215,7 +250,12 @@ const editUser = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw returnError({ req, res, error: errors.array()[0] })
+      return returnError({
+        req,
+        res,
+        error: errors.array()[0],
+        status: NOT_ACCEPTABLE
+      })
     }
 
     const {
@@ -242,7 +282,7 @@ const emailOptOut = async (req, res) => {
     const { email } = req.query
 
     if (!email) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,

@@ -15,7 +15,7 @@ const handleUserSearch = async (req, res) => {
     const userId = req.body?.id_from_token
 
     if (!searchText) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -47,7 +47,7 @@ const handleAdventureSearch = async (req, res) => {
     const parentId = req.query?.id
 
     if (!searchText) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -77,7 +77,7 @@ const handleZoneSearch = async (req, res) => {
     const parentId = req.query?.id
 
     if (!searchText) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,

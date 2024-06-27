@@ -2,7 +2,8 @@ const {
   sendResponse,
   returnError,
   CREATED,
-  NOT_ACCEPTABLE
+  NOT_ACCEPTABLE,
+  SERVER_ERROR
 } = require('../ResponseHandling')
 const serviceHandler = require('../Config/services')
 const { validationResult } = require('express-validator')
@@ -11,7 +12,12 @@ const completeAdventure = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      return returnError({ req, res, error: errors.array()[0] })
+      return returnError({
+        req,
+        res,
+        error: errors.array()[0],
+        status: NOT_ACCEPTABLE
+      })
     }
 
     const {
@@ -45,7 +51,12 @@ const completeAdventure = async (req, res) => {
       })
 
     if (!match) {
-      throw returnError({ req, res, message: response, status: NOT_ACCEPTABLE })
+      return returnError({
+        req,
+        res,
+        message: response,
+        status: NOT_ACCEPTABLE
+      })
     }
 
     const { userCompleted, adventureCompleted } =
@@ -70,7 +81,13 @@ const completeAdventure = async (req, res) => {
       }
     })
   } catch (error) {
-    return returnError({ req, res, message: 'serverCreateActivity', error })
+    return returnError({
+      req,
+      res,
+      message: 'serverCreateActivity',
+      error,
+      status: SERVER_ERROR
+    })
   }
 }
 

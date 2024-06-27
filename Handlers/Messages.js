@@ -4,7 +4,8 @@ const {
   CREATED,
   NOT_ACCEPTABLE,
   SUCCESS,
-  NOT_FOUND
+  NOT_FOUND,
+  SERVER_ERROR
 } = require('../ResponseHandling')
 const serviceHandler = require('../Config/services')
 
@@ -61,7 +62,8 @@ const addConversation = async (req, res) => {
       req,
       res,
       message: 'server error: could not create a conversation',
-      error
+      error,
+      status: SERVER_ERROR
     })
   }
 }
@@ -70,7 +72,7 @@ const addUserToConversation = async (req, res) => {
   try {
     const { user_id, conversation_id } = req.body
     if (!(user_id && conversation_id)) {
-      throw returnError({
+      return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
@@ -96,7 +98,8 @@ const addUserToConversation = async (req, res) => {
       req,
       res,
       message: 'server error: could not add user to conversation',
-      error
+      error,
+      status: SERVER_ERROR
     })
   }
 }
@@ -118,7 +121,8 @@ const getConversations = async (req, res) => {
       req,
       res,
       message: 'server error: could not get conversations',
-      error
+      error,
+      status: SERVER_ERROR
     })
   }
 }
@@ -126,7 +130,7 @@ const getConversations = async (req, res) => {
 const deleteConversation = async (req, res) => {
   try {
     req.logger.info('delete conversation not ready')
-    throw returnError({
+    return returnError({
       req,
       res,
       message: 'endpoint not ready',
@@ -137,7 +141,8 @@ const deleteConversation = async (req, res) => {
       req,
       res,
       message: 'server error: could not delete conversation',
-      error
+      error,
+      status: SERVER_ERROR
     })
   }
 }
