@@ -12,8 +12,7 @@ const serviceHandler = require('../Config/services')
 const addConversation = async (req, res) => {
   try {
     if (
-      !req.body.user_ids ||
-      req.body.user_ids.length < 1 ||
+      !req.body.user_ids?.length ||
       req.body.user_ids.includes(null) ||
       req.body.user_ids.includes(undefined) ||
       req.body.user_ids.includes('')
@@ -39,22 +38,7 @@ const addConversation = async (req, res) => {
     return sendResponse({
       req,
       res,
-      data: response.conversation_exists
-        ? {
-            conversation: {
-              users: userIds.map((user_id) => ({ user_id })),
-              ...response.conversation
-            }
-          }
-        : {
-            conversation: {
-              users: userIds.map((user_id) => ({ user_id })),
-              conversation_id: response.conversation_id,
-              last_message: '',
-              unread: false
-            },
-            senderId: id_from_token
-          },
+      data: response,
       status: CREATED
     })
   } catch (error) {

@@ -81,7 +81,7 @@ const getZonesByDistance = async (req, res) => {
 
 const getZone = async (req, res) => {
   try {
-    const zoneId = req.query?.zone_id
+    const zoneId = req.query?.zone_id || req.query?.id
 
     if (!zoneId) {
       return returnError({
