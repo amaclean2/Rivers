@@ -184,6 +184,8 @@ const getAdventuresByDistance = async (req, res) => {
 const getAdventureDetails = async (req, res) => {
   try {
     const { id, type } = req.query
+    const userId = req.body.id_from_token
+
     if (!id || !type) {
       return returnError({
         req,
@@ -202,6 +204,14 @@ const getAdventureDetails = async (req, res) => {
         adventureId: id,
         adventureType: type
       })
+
+    if (!userId) {
+      req.logger.info('getting adventure details without signed in user')
+
+      delete adventure.creator
+      delete adventure.todo_users
+      delete adventure.completed_users
+    }
 
     return sendResponse({ req, res, data: { adventure }, status: SUCCESS })
   } catch (error) {

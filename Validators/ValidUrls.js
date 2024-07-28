@@ -4,7 +4,6 @@ module.exports = [
   'GET:favicon',
   // adventures
   'GET:/adventures/all',
-  'GET:/adventures/adventureTypes',
   'GET:/adventures/details',
   'GET:/adventures/distance',
   // zones

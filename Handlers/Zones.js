@@ -9,6 +9,7 @@ const {
   CREATED,
   NOT_FOUND
 } = require('../ResponseHandling')
+const logger = require('../Config/logger')
 
 const getAllZones = async (req, res) => {
   try {
@@ -82,6 +83,7 @@ const getZonesByDistance = async (req, res) => {
 const getZone = async (req, res) => {
   try {
     const zoneId = req.query?.zone_id || req.query?.id
+    const userId = req.body.id_from_token
 
     if (!zoneId) {
       return returnError({
@@ -100,6 +102,12 @@ const getZone = async (req, res) => {
         status: NOT_FOUND,
         message: 'Zone not found'
       })
+    }
+
+    if (!userId) {
+      logger.info('zone fetched without user login')
+
+      delete zone.creator
     }
 
     return sendResponse({ req, res, data: { zone }, status: SUCCESS })

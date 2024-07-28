@@ -8,37 +8,52 @@ const {
   SERVER_ERROR
 } = require('../ResponseHandling')
 const serviceHandler = require('../Config/services')
+const logger = require('../Config/logger')
 
 const addConversation = async (req, res) => {
   try {
+    const senderId = req.body.id_from_token
+
+    if (!senderId) {
+      return returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        message: 'user must be logged in to create a new conversation'
+      })
+    }
+
     if (
       !req.body.user_ids?.length ||
       req.body.user_ids.includes(null) ||
       req.body.user_ids.includes(undefined) ||
-      req.body.user_ids.includes('')
+      req.body.user_ids.includes('') ||
+      req.body.user_ids.includes(senderId)
     ) {
       return returnError({
         req,
         res,
         status: NOT_ACCEPTABLE,
         message:
-          'an array of user ids as numbers are required in the request body for a conversation to be created'
+          'an array of user ids as numbers are required in the request body for a conversation to be created. The current user cannot be included'
       })
     }
-
-    const { id_from_token } = req.body
-    const userIds = [id_from_token, ...req.body.user_ids]
+    const userIds = [senderId, ...req.body.user_ids]
 
     req.logger.info('Creating a new conversation')
 
-    const response = await serviceHandler.messagingService.createConversation({
-      userIds
-    })
+    const { conversation_exists, conversations } =
+      await serviceHandler.messagingService.createConversation({
+        userIds,
+        senderId
+      })
+
+    logger.info(JSON.stringify({ conversation_exists, conversations }))
 
     return sendResponse({
       req,
       res,
-      data: response,
+      data: { conversations, conversation_exists },
       status: CREATED
     })
   } catch (error) {
@@ -60,21 +75,36 @@ const addUserToConversation = async (req, res) => {
         req,
         res,
         status: NOT_ACCEPTABLE,
-        message: 'a user_id and conversation_id is required to add a user'
+        message:
+          'a user_id and a conversation_id need to be specified to add the user to the conversation'
       })
     }
 
-    req.logger.info(`Adding a user to a conversation ${conversation_id}`)
+    logger.info(`Adding new user to conversation ${conversation_id}`)
 
-    await serviceHandler.messagingService.expandConversation({
-      userId: user_id,
-      conversationId: conversation_id
-    })
+    const { newUserConversations, newUser } =
+      await serviceHandler.messagingService.expandConversation({
+        userId: user_id,
+        conversationId: conversation_id
+      })
+
+    logger.info(
+      JSON.stringify({
+        newUserToConversation: true,
+        userId: user_id,
+        conversationId: conversation_id
+      })
+    )
 
     return sendResponse({
       req,
       res,
-      data: { message: 'user added', user_id, conversation_id },
+      data: {
+        user_added: true,
+        new_user: newUser,
+        new_user_conversations: newUserConversations,
+        conversation_id
+      },
       status: SUCCESS
     })
   } catch (error) {
@@ -90,14 +120,21 @@ const addUserToConversation = async (req, res) => {
 
 const getConversations = async (req, res) => {
   try {
-    const { id_from_token } = req.body
+    const userId = req.body.id_from_token
+
+    if (!userId) {
+      return returnError({
+        req,
+        res,
+        status: NOT_ACCEPTABLE,
+        message: 'a user must be logged in to get conversations'
+      })
+    }
 
     req.logger.info('getting all conversations')
 
     const conversations =
-      await serviceHandler.messagingService.getConversationsPerUser({
-        userId: id_from_token
-      })
+      await serviceHandler.messagingService.getConversationsPerUser({ userId })
 
     return sendResponse({ req, res, data: { conversations }, status: SUCCESS })
   } catch (error) {
@@ -131,9 +168,41 @@ const deleteConversation = async (req, res) => {
   }
 }
 
+const getSpecificConversation = async (req, res) => {
+  try {
+    const conversationId = req.query.conversation_id
+    const userId = req.body.id_from_token
+
+    if (!conversationId) {
+      return returnError({
+        req,
+        res,
+        message: 'conversation_id parameter must be included in query',
+        status: NOT_ACCEPTABLE
+      })
+    }
+
+    const conversation = await serviceHandler.messagingService.getConversation({
+      conversationId,
+      userId
+    })
+
+    return sendResponse({ req, res, data: { conversation }, status: SUCCESS })
+  } catch (error) {
+    return returnError({
+      req,
+      res,
+      message: 'server error: could not get this conversation',
+      error,
+      status: SERVER_ERROR
+    })
+  }
+}
+
 module.exports = {
   getConversations,
   addConversation,
   deleteConversation,
-  addUserToConversation
+  addUserToConversation,
+  getSpecificConversation
 }
