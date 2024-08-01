@@ -39,13 +39,13 @@ app.use(async (req, res, next) => {
 
     let validation
 
-    if (noAuthRequired) {
-      validation = 'skipped'
-    } else if (bearerToken === undefined) {
-      throw `there was no authorization token provided for ${searchUrl} from ${req.ip}`
-    } else {
+    if (bearerToken !== undefined) {
       const decoded = jwt.verify(bearerToken, process.env.JWT_SECRET)
       validation = { idFromToken: decoded.id }
+    } else if (noAuthRequired) {
+      validation = 'skipped'
+    } else {
+      throw `there was no authorization token provided for ${searchUrl} from ${req.ip}`
     }
 
     if (validation === 'skipped') {

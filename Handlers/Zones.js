@@ -1,4 +1,3 @@
-const { validationResult } = require('express-validator')
 const serviceHandler = require('../Config/services')
 const {
   returnError,
@@ -118,16 +117,6 @@ const getZone = async (req, res) => {
 
 const createZone = async (req, res) => {
   try {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      return returnError({
-        req,
-        res,
-        status: NOT_ACCEPTABLE,
-        error: errors.array()[0]
-      })
-    }
-
     const zoneParams = {
       adventureType: req.body.adventure_type,
       zoneName: req.body.zone_name,
@@ -248,17 +237,7 @@ const addChild = async (req, res) => {
 
 const editMetaData = async (req, res) => {
   try {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      return returnError({
-        req,
-        res,
-        status: NOT_ACCEPTABLE,
-        error: errors.array()[0]
-      })
-    }
-
-    const editObject = req.body?.field
+    const editObject = req.body?.formatted_field
 
     if (editObject.editField === 'coordinates') {
       await serviceHandler.zoneService.editZone({

@@ -171,6 +171,7 @@ const deleteConversation = async (req, res) => {
 const getSpecificConversation = async (req, res) => {
   try {
     const conversationId = req.query.conversation_id
+    const lastMessage = req.query.last_message
     const userId = req.body.id_from_token
 
     if (!conversationId) {
@@ -184,6 +185,7 @@ const getSpecificConversation = async (req, res) => {
 
     const conversation = await serviceHandler.messagingService.getConversation({
       conversationId,
+      lastMessage: [null, undefined].includes(lastMessage) ? 0 : lastMessage,
       userId
     })
 

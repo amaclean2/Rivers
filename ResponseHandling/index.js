@@ -36,6 +36,7 @@ const returnError = ({
   }
 
   if (req?.body) {
+    logger.error(`request_body: ${JSON.stringify(req.body)}`)
     errorBody.request_body = req.body
   }
 
